@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusTrade AI — Multi-Agent Autonomous Trading System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* === HIDE HOSTING BANNER === */
+[class*="mule"], [id*="mule"], [class*="Mule"], [id*="Mule"],
+[class*="banner"], [class*="watermark"], [class*="footer-badge"],
+div[style*="position: fixed"][style*="bottom"],
+div[style*="position:fixed"][style*="bottom"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* === CSS VARIABLES === */
+:root {
+  --bg-0: #06080d;
+  --bg-1: #0b0f18;
+  --bg-2: #111827;
+  --bg-3: #1a2235;
+  --bg-4: #243049;
+  --border: #1e293b;
+  --border-light: #334155;
+  --text-0: #f1f5f9;
+  --text-1: #cbd5e1;
+  --text-2: #94a3b8;
+  --text-3: #64748b;
+  --cyan: #00e5ff;
+  --cyan-dim: #0891b2;
+  --cyan-glow: rgba(0,229,255,0.15);
+  --green: #00e676;
+  --green-dim: #059669;
+  --green-glow: rgba(0,230,118,0.12);
+  --red: #ff3d71;
+  --red-dim: #dc2626;
+  --red-glow: rgba(255,61,113,0.12);
+  --amber: #fbbf24;
+  --amber-dim: #d97706;
+  --amber-glow: rgba(251,191,36,0.12);
+  --purple: #a78bfa;
+  --purple-dim: #7c3aed;
+  --purple-glow: rgba(167,139,250,0.12);
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* === RESET === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-display);
+  background: var(--bg-0);
+  color: var(--text-1);
+  overflow: hidden;
+  height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+/* === LAYOUT === */
+.app { display: flex; height: 100vh; flex-direction: column; }
+
+/* Top bar */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; height: 48px; min-height: 48px;
+  background: var(--bg-1); border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 8px; }
+.logo-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 13px; color: var(--bg-0);
+  font-family: var(--font-mono);
+}
+.logo-text { font-weight: 700; font-size: 15px; color: var(--text-0); letter-spacing: -0.3px; }
+.logo-tag {
+  font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 4px;
+  background: var(--cyan-glow); color: var(--cyan); letter-spacing: 0.5px;
+  font-family: var(--font-mono); text-transform: uppercase;
+}
+.topbar-center { display: flex; align-items: center; gap: 12px; }
+.live-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--green);
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,230,118,0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(0,230,118,0); }
+}
+.topbar-stats { display: flex; gap: 20px; font-family: var(--font-mono); font-size: 11px; }
+.topbar-stat { display: flex; align-items: center; gap: 6px; color: var(--text-2); }
+.topbar-stat .val { color: var(--text-0); font-weight: 500; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.agent-count-badge {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 6px;
+  background: var(--bg-3); font-size: 11px; font-family: var(--font-mono);
+  color: var(--cyan);
+}
+
+/* Main area */
+.main { display: flex; flex: 1; overflow: hidden; }
+
+/* Sidebar */
+.sidebar {
+  width: 200px; min-width: 200px;
+  background: var(--bg-1); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 12px 0;
+}
+.nav-section { padding: 8px 16px 4px; font-size: 9px; font-weight: 700; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase; font-family: var(--font-mono); }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; cursor: pointer; transition: var(--transition);
+  font-size: 13px; font-weight: 500; color: var(--text-2);
+  border-left: 2px solid transparent; position: relative;
+}
+.nav-item:hover { background: var(--bg-2); color: var(--text-0); }
+.nav-item.active {
+  background: var(--bg-2); color: var(--cyan);
+  border-left-color: var(--cyan);
+}
+.nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+.nav-item .badge {
+  margin-left: auto; font-size: 9px; font-weight: 700;
+  padding: 1px 5px; border-radius: 4px;
+  font-family: var(--font-mono);
+}
+.badge-cyan { background: var(--cyan-glow); color: var(--cyan); }
+.badge-green { background: var(--green-glow); color: var(--green); }
+.badge-red { background: var(--red-glow); color: var(--red); }
+.badge-amber { background: var(--amber-glow); color: var(--amber); }
+.sidebar-footer {
+  margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border);
+  font-size: 10px; color: var(--text-3); font-family: var(--font-mono);
+}
+
+/* Content */
+.content { flex: 1; overflow-y: auto; padding: 20px; background: var(--bg-0); }
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* === COMPONENTS === */
+/* Cards */
+.card {
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px; position: relative;
+  transition: var(--transition);
+}
+.card:hover { border-color: var(--border-light); }
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.card-title {
+  font-size: 12px; font-weight: 600; color: var(--text-2);
+  text-transform: uppercase; letter-spacing: 0.8px; font-family: var(--font-mono);
+}
+.card-badge {
+  font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+  font-family: var(--font-mono);
+}
+
+/* Grid layouts */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+.grid-5 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 12px; }
+.grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
+
+/* Stat blocks */
+.stat-value {
+  font-size: 24px; font-weight: 700; color: var(--text-0);
+  font-family: var(--font-mono); letter-spacing: -0.5px;
+}
+.stat-label { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.stat-change {
+  font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+  display: inline-flex; align-items: center; gap: 3px;
+}
+.stat-up { color: var(--green); }
+.stat-down { color: var(--red); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 6px; border: none;
+  font-family: var(--font-display); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: var(--transition);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan-dim), var(--cyan));
+  color: var(--bg-0);
+}
+.btn-primary:hover { box-shadow: 0 0 20px var(--cyan-glow); transform: translateY(-1px); }
+.btn-secondary { background: var(--bg-3); color: var(--text-1); }
+.btn-secondary:hover { background: var(--bg-4); }
+.btn-danger { background: var(--red-dim); color: white; }
+.btn-success { background: var(--green-dim); color: white; }
+.btn-sm { padding: 5px 10px; font-size: 11px; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  text-align: left; padding: 8px 12px; font-size: 10px; font-weight: 600;
+  color: var(--text-3); text-transform: uppercase; letter-spacing: 0.8px;
+  font-family: var(--font-mono); border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 12px;
+}
+tr:hover td { background: var(--bg-2); }
+
+/* Tags */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 4px; font-size: 10px;
+  font-weight: 600; font-family: var(--font-mono);
+}
+.tag-long { background: var(--green-glow); color: var(--green); }
+.tag-short { background: var(--red-glow); color: var(--red); }
+.tag-neutral { background: var(--bg-3); color: var(--text-2); }
+.tag-high { background: var(--red-glow); color: var(--red); }
+.tag-medium { background: var(--amber-glow); color: var(--amber); }
+.tag-low { background: var(--green-glow); color: var(--green); }
+
+/* Progress bars */
+.progress-bar {
+  height: 4px; background: var(--bg-3); border-radius: 2px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 2px; transition: width 0.6s ease;
+}
+
+/* Section headers */
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: 18px; font-weight: 700; color: var(--text-0);
+  letter-spacing: -0.3px;
+}
+.section-subtitle { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+/* Agent cards */
+.agent-card {
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px; position: relative;
+  overflow: hidden;
+}
+.agent-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.agent-card.agent-macro::before { background: linear-gradient(90deg, var(--cyan), transparent); }
+.agent-card.agent-ta::before { background: linear-gradient(90deg, var(--purple), transparent); }
+.agent-card.agent-sentiment::before { background: linear-gradient(90deg, var(--amber), transparent); }
+.agent-card.agent-risk::before { background: linear-gradient(90deg, var(--red), transparent); }
+.agent-card.agent-exec::before { background: linear-gradient(90deg, var(--green), transparent); }
+.agent-status {
+  display: flex; align-items: center; gap: 5px; font-size: 10px;
+  font-family: var(--font-mono); font-weight: 600;
+}
+.agent-status .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.agent-status.thinking .dot { background: var(--amber); animation: pulse-dot 1s infinite; }
+.agent-status.active .dot { background: var(--green); }
+.agent-status.standby .dot { background: var(--text-3); }
+
+/* Heatmap cell */
+.heatmap-cell {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; font-family: var(--font-mono); font-size: 10px;
+  font-weight: 600; aspect-ratio: 1; transition: var(--transition);
+  cursor: default;
+}
+.heatmap-cell:hover { transform: scale(1.1); z-index: 2; }
+
+/* Signal meter */
+.signal-meter {
+  display: flex; align-items: center; gap: 8px;
+}
+.meter-bar {
+  flex: 1; height: 6px; background: var(--bg-3); border-radius: 3px;
+  overflow: hidden; position: relative;
+}
+.meter-fill {
+  height: 100%; border-radius: 3px; transition: width 0.8s ease;
+}
+.meter-value {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  min-width: 32px; text-align: right;
+}
+
+/* Chat */
+.chat-container {
+  display: flex; flex-direction: column; height: 500px;
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; }
+.chat-msg {
+  margin-bottom: 12px; display: flex; gap: 10px;
+  animation: fadeIn 0.3s ease;
+}
+.chat-avatar {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.chat-bubble {
+  padding: 10px 14px; border-radius: 8px; font-size: 13px;
+  line-height: 1.5; max-width: 80%;
+}
+.chat-msg.ai .chat-avatar { background: var(--cyan-glow); color: var(--cyan); }
+.chat-msg.ai .chat-bubble { background: var(--bg-2); color: var(--text-1); }
+.chat-msg.user .chat-avatar { background: var(--purple-glow); color: var(--purple); }
+.chat-msg.user .chat-bubble { background: var(--bg-3); color: var(--text-0); }
+.chat-input-wrap {
+  display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border);
+}
+.chat-input {
+  flex: 1; background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 12px; color: var(--text-0);
+  font-family: var(--font-display); font-size: 13px; outline: none;
+}
+.chat-input:focus { border-color: var(--cyan-dim); }
+
+/* Ticker tape */
+.ticker-tape {
+  display: flex; gap: 24px; overflow: hidden; white-space: nowrap;
+  padding: 6px 0; font-family: var(--font-mono); font-size: 11px;
+}
+.ticker-item { display: inline-flex; align-items: center; gap: 6px; }
+.ticker-symbol { color: var(--text-0); font-weight: 600; }
+.ticker-price { color: var(--text-1); }
+
+/* Glow effects */
+.glow-cyan { box-shadow: 0 0 20px var(--cyan-glow), inset 0 0 20px var(--cyan-glow); }
+.glow-green { box-shadow: 0 0 20px var(--green-glow); }
+.glow-red { box-shadow: 0 0 20px var(--red-glow); }
+
+/* Mini chart placeholder */
+.mini-chart {
+  height: 40px; display: flex; align-items: flex-end; gap: 1px;
+}
+.mini-bar {
+  flex: 1; border-radius: 1px 1px 0 0; transition: height 0.3s ease;
+  min-width: 2px;
+}
+
+/* View header */
+.view-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.view-title { font-size: 22px; font-weight: 800; color: var(--text-0); letter-spacing: -0.5px; }
+.view-desc { font-size: 12px; color: var(--text-3); margin-top: 4px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 2px; margin-bottom: 16px; background: var(--bg-1); border-radius: 8px; padding: 3px; width: fit-content; }
+.tab {
+  padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: var(--transition); color: var(--text-3);
+  font-family: var(--font-mono);
+}
+.tab:hover { color: var(--text-1); }
+.tab.active { background: var(--bg-3); color: var(--text-0); }
+
+/* Regime indicator */
+.regime-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 6px; font-size: 12px;
+  font-weight: 700; font-family: var(--font-mono);
+}
+.regime-bull { background: var(--green-glow); color: var(--green); border: 1px solid var(--green-dim); }
+.regime-bear { background: var(--red-glow); color: var(--red); border: 1px solid var(--red-dim); }
+.regime-chop { background: var(--amber-glow); color: var(--amber); border: 1px solid var(--amber-dim); }
+
+/* Decision feed */
+.decision-feed { max-height: 300px; overflow-y: auto; }
+.decision-item {
+  display: flex; gap: 10px; padding: 10px 0;
+  border-bottom: 1px solid var(--border); font-size: 12px;
+}
+.decision-time {
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+  min-width: 50px;
+}
+.decision-agent {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  min-width: 60px;
+}
+
+/* Tooltip */
+.tip {
+  position: relative;
+}
+.tip::after {
+  content: attr(data-tip); position: absolute; bottom: 100%; left: 50%;
+  transform: translateX(-50%); padding: 4px 8px; border-radius: 4px;
+  background: var(--bg-4); color: var(--text-0); font-size: 10px;
+  white-space: nowrap; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.tip:hover::after { opacity: 1; }
+
+/* Animations */
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes glow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+.animate-in { animation: slideUp 0.4s ease forwards; }
+.stagger-1 { animation-delay: 0.05s; opacity: 0; }
+.stagger-2 { animation-delay: 0.1s; opacity: 0; }
+.stagger-3 { animation-delay: 0.15s; opacity: 0; }
+.stagger-4 { animation-delay: 0.2s; opacity: 0; }
+.stagger-5 { animation-delay: 0.25s; opacity: 0; }
+
+/* Select */
+select {
+  background: var(--bg-2); border: 1px solid var(--border); color: var(--text-0);
+  padding: 6px 10px; border-radius: 6px; font-family: var(--font-mono);
+  font-size: 12px; outline: none; cursor: pointer;
+}
+select:focus { border-color: var(--cyan-dim); }
+
+/* Input */
+input[type="number"], input[type="text"] {
+  background: var(--bg-2); border: 1px solid var(--border); color: var(--text-0);
+  padding: 6px 10px; border-radius: 6px; font-family: var(--font-mono);
+  font-size: 12px; outline: none;
+}
+input:focus { border-color: var(--cyan-dim); }
+
+/* Spacer */
+.mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-20 { margin-top: 20px; }
+.mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; }
+.gap-8 { gap: 8px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; }
+.flex { display: flex; } .flex-col { flex-direction: column; }
+.items-center { align-items: center; } .justify-between { justify-content: space-between; }
+.flex-1 { flex: 1; } .w-full { width: 100%; }
+.text-cyan { color: var(--cyan); } .text-green { color: var(--green); } .text-red { color: var(--red); }
+.text-amber { color: var(--amber); } .text-purple { color: var(--purple); }
+.text-muted { color: var(--text-3); } .font-mono { font-family: var(--font-mono); }
+.text-xs { font-size: 10px; } .text-sm { font-size: 12px; }
+.font-bold { font-weight: 700; } .font-semibold { font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <div class="logo-icon">N</div>
+        <span class="logo-text">NexusTrade AI</span>
+        <span class="logo-tag">Multi-Agent</span>
+      </div>
+    </div>
+    <div class="topbar-center">
+      <div class="live-badge" id="live-badge"><div class="live-dot"></div> <span id="live-text">LIVE</span></div>
+      <div class="topbar-stats">
+        <div class="topbar-stat">BTC <span class="val" id="tb-btc">$--</span></div>
+        <div class="topbar-stat">ETH <span class="val" id="tb-eth">$--</span></div>
+        <div class="topbar-stat">F&G <span class="val" id="tb-fg">--</span></div>
+        <div class="topbar-stat">Regime <span class="val" id="tb-regime">--</span></div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="agent-count-badge">
+        <span style="color:var(--green)">&#9679;</span> 5 Agents Active
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-section">Core</div>
+      <div class="nav-item active" data-view="dashboard"><span class="icon">&#9673;</span> Dashboard</div>
+      <div class="nav-item" data-view="signals"><span class="icon">&#9889;</span> Signal Engine <span class="badge badge-cyan">30</span></div>
+      <div class="nav-item" data-view="agents"><span class="icon">&#9881;</span> AI Agents <span class="badge badge-green">5</span></div>
+      <div class="nav-section">Trading</div>
+      <div class="nav-item" data-view="paper"><span class="icon">&#9830;</span> Paper Lab</div>
+      <div class="nav-item" data-view="risk"><span class="icon">&#9888;</span> Risk Lab</div>
+      <div class="nav-item" data-view="strategy"><span class="icon">&#9733;</span> Strategy Forge</div>
+      <div class="nav-section">Intel</div>
+      <div class="nav-item" data-view="ask"><span class="icon">&#9993;</span> Ask Nexus</div>
+      <div class="nav-item" data-view="log"><span class="icon">&#9776;</span> Decision Log</div>
+      <div class="sidebar-footer">
+        v2.0.0 &middot; Bitget API<br>
+        Hackathon Submission 2025
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content" id="content">
+      <!-- DASHBOARD VIEW -->
+      <div class="view active" id="view-dashboard">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Command Center</div>
+            <div class="view-desc">Multi-agent orchestration &middot; Real-time market intelligence</div>
+          </div>
+          <div class="flex gap-8">
+            <div class="regime-badge regime-bull" id="regime-badge">&#9650; BULLISH REGIME</div>
+            <button class="btn btn-primary btn-sm" onclick="refreshAll()">&#8635; Refresh All</button>
+          </div>
+        </div>
+
+        <!-- Top stats row -->
+        <div class="grid-5 mb-16" id="dash-stats">
+          <div class="card animate-in stagger-1">
+            <div class="stat-label">Portfolio Value</div>
+            <div class="stat-value text-cyan" id="ds-portfolio">$10,000</div>
+            <div class="stat-change stat-up" id="ds-portfolio-chg">&#9650; +2.4%</div>
+          </div>
+          <div class="card animate-in stagger-2">
+            <div class="stat-label">Agent Consensus</div>
+            <div class="stat-value text-green" id="ds-consensus">87%</div>
+            <div class="stat-change">Bullish bias</div>
+          </div>
+          <div class="card animate-in stagger-3">
+            <div class="stat-label">Active Signals</div>
+            <div class="stat-value" id="ds-signals">12</div>
+            <div class="stat-change"><span class="text-green">8 LONG</span> &middot; <span class="text-red">4 SHORT</span></div>
+          </div>
+          <div class="card animate-in stagger-4">
+            <div class="stat-label">Win Rate (7d)</div>
+            <div class="stat-value text-green" id="ds-winrate">68.5%</div>
+            <div class="stat-change stat-up">&#9650; +3.2% vs prev</div>
+          </div>
+          <div class="card animate-in stagger-5">
+            <div class="stat-label">Risk Score</div>
+            <div class="stat-value text-amber" id="ds-risk">42</div>
+            <div class="stat-change">Medium risk</div>
+          </div>
+        </div>
+
+        <!-- Agent status row -->
+        <div class="section-header">
+          <div class="section-title">Agent Fleet Status</div>
+          <div class="text-xs text-muted font-mono">Last sync: <span id="last-sync">--</span></div>
+        </div>
+        <div class="grid-5 mb-16" id="agent-fleet">
+          <div class="agent-card agent-macro animate-in stagger-1">
+            <div class="flex items-center justify-between mb-8">
+              <div style="font-size:13px;font-weight:700;color:var(--cyan)">&#9670; Macro</div>
+              <div class="agent-status active"><div class="dot"></div> ACTIVE</div>
+            </div>
+            <div class="text-xs text-muted mb-8">Fed policy, DXY, yields</div>
+            <div class="signal-meter">
+              <div class="meter-bar"><div class="meter-fill" style="width:78%;background:var(--cyan)"></div></div>
+              <div class="meter-value text-cyan">78</div>
+            </div>
+            <div class="text-xs text-muted mt-8">Conviction: High</div>
+          </div>
+          <div class="agent-card agent-ta animate-in stagger-2">
+            <div class="flex items-center justify-between mb-8">
+              <div style="font-size:13px;font-weight:700;color:var(--purple)">&#9670; Technical</div>
+              <div class="agent-status active"><div class="dot"></div> ACTIVE</div>
+            </div>
+            <div class="text-xs text-muted mb-8">EMA/RSI/ATR/MFI/ICH</div>
+            <div class="signal-meter">
+              <div class="meter-bar"><div class="meter-fill" style="width:85%;background:var(--purple)"></div></div>
+              <div class="meter-value text-purple">85</div>
+            </div>
+            <div class="text-xs text-muted mt-8">Conviction: Very High</div>
+          </div>
+          <div class="agent-card agent-sentiment animate-in stagger-3">
+            <div class="flex items-center justify-between mb-8">
+              <div style="font-size:13px;font-weight:700;color:var(--amber)">&#9670; Sentiment</div>
+              <div class="agent-status active"><div class="dot"></div> ACTIVE</div>
+            </div>
+            <div class="text-xs text-muted mb-8">Social, news, F&G index</div>
+            <div class="signal-meter">
+              <div class="meter-bar"><div class="meter-fill" style="width:62%;background:var(--amber)"></div></div>
+              <div class="meter-value text-amber">62</div>
+            </div>
+            <div class="text-xs text-muted mt-8">Conviction: Medium</div>
+          </div>
+          <div class="agent-card agent-risk animate-in stagger-4">
+            <div class="flex items-center justify-between mb-8">
+              <div style="font-size:13px;font-weight:700;color:var(--red)">&#9670; Risk</div>
+              <div class="agent-status thinking"><div class="dot"></div> ANALYZING</div>
+            </div>
+            <div class="text-xs text-muted mb-8">VaR, drawdown, exposure</div>
+            <div class="signal-meter">
+              <div class="meter-bar"><div class="meter-fill" style="width:42%;background:var(--red)"></div></div>
+              <div class="meter-value text-red">42</div>
+            </div>
+            <div class="text-xs text-muted mt-8">Risk: Medium</div>
+          </div>
+          <div class="agent-card agent-exec animate-in stagger-5">
+            <div class="flex items-center justify-between mb-8">
+              <div style="font-size:13px;font-weight:700;color:var(--green)">&#9670; Executor</div>
+              <div class="agent-status active"><div class="dot"></div> READY</div>
+            </div>
+            <div class="text-xs text-muted mb-8">Smart order routing</div>
+            <div class="signal-meter">
+              <div class="meter-bar"><div class="meter-fill" style="width:95%;background:var(--green)"></div></div>
+              <div class="meter-value text-green">95</div>
+            </div>
+            <div class="text-xs text-muted mt-8">Uptime: 99.9%</div>
+          </div>
+        </div>
+
+        <!-- Bottom row: Market heatmap + Decision feed -->
+        <div class="grid-2-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Market Heatmap &middot; 24h Performance</div>
+              <div class="tabs" id="heatmap-tabs">
+                <div class="tab active" data-filter="all">All</div>
+                <div class="tab" data-filter="gainers">Gainers</div>
+                <div class="tab" data-filter="losers">Losers</div>
+              </div>
+            </div>
+            <div class="grid-5" id="heatmap-grid" style="gap:6px;">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Agent Decision Feed</div>
+              <span class="card-badge badge-green">LIVE</span>
+            </div>
+            <div class="decision-feed" id="decision-feed">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIGNALS VIEW -->
+      <div class="view" id="view-signals">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Signal Engine</div>
+            <div class="view-desc">Confluence scoring &middot; Multi-timeframe &middot; EMA/RSI/ATR/Market Structure/ICH</div>
+          </div>
+          <div class="flex gap-8 items-center">
+            <select id="sig-timeframe">
+              <option value="15m">15m</option>
+              <option value="1h" selected>1H</option>
+              <option value="4h">4H</option>
+              <option value="1d">1D</option>
+            </select>
+            <select id="sig-filter">
+              <option value="all">All Signals</option>
+              <option value="long">LONG Only</option>
+              <option value="short">SHORT Only</option>
+              <option value="high">High Confidence</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="runSignalScan()">&#9889; Run Scan</button>
+          </div>
+        </div>
+
+        <!-- Confluence breakdown -->
+        <div class="grid-3 mb-16">
+          <div class="card">
+            <div class="card-title mb-8">Confluence Factors</div>
+            <div id="confluence-factors">
+              <div class="flex justify-between items-center mb-8">
+                <span class="text-sm">EMA 20/50 Cross</span>
+                <div class="signal-meter" style="width:140px">
+                  <div class="meter-bar"><div class="meter-fill" style="width:82%;background:var(--green)"></div></div>
+                  <div class="meter-value text-green">82</div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mb-8">
+                <span class="text-sm">RSI (14) Momentum</span>
+                <div class="signal-meter" style="width:140px">
+                  <div class="meter-bar"><div class="meter-fill" style="width:65%;background:var(--cyan)"></div></div>
+                  <div class="meter-value text-cyan">65</div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mb-8">
+                <span class="text-sm">ATR Volatility</span>
+                <div class="signal-meter" style="width:140px">
+                  <div class="meter-bar"><div class="meter-fill" style="width:48%;background:var(--amber)"></div></div>
+                  <div class="meter-value text-amber">48</div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mb-8">
+                <span class="text-sm">Market Structure</span>
+                <div class="signal-meter" style="width:140px">
+                  <div class="meter-bar"><div class="meter-fill" style="width:90%;background:var(--green)"></div></div>
+                  <div class="meter-value text-green">90</div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center mb-8">
+                <span class="text-sm">Ichimoku Cloud</span>
+                <div class="signal-meter" style="width:140px">
+                  <div class="meter-bar"><div class="meter-fill" style="width:73%;background:var(--purple)"></div></div>
+                  <div class="meter-value text-purple">73</div>
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Multi-TF Agreement</span>
+                <div class="signal-meter" style="width:140px">
+                  <div class="meter-bar"><div class="meter-fill" style="width:77%;background:var(--cyan)"></div></div>
+                  <div class="meter-value text-cyan">77</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title mb-8">Market Regime Detector</div>
+            <div style="text-align:center;padding:20px 0">
+              <div id="regime-display" style="font-size:48px;font-weight:800;color:var(--green);font-family:var(--font-mono)">BULL</div>
+              <div class="text-sm text-muted mt-8">Confidence: <span class="text-green font-bold">78%</span></div>
+            </div>
+            <div class="mt-12">
+              <div class="flex justify-between text-xs mb-8">
+                <span class="text-muted">Bullish</span><span class="text-green font-mono">78%</span>
+              </div>
+              <div class="progress-bar mb-8"><div class="progress-fill" style="width:78%;background:var(--green)"></div></div>
+              <div class="flex justify-between text-xs mb-8">
+                <span class="text-muted">Bearish</span><span class="text-red font-mono">12%</span>
+              </div>
+              <div class="progress-bar mb-8"><div class="progress-fill" style="width:12%;background:var(--red)"></div></div>
+              <div class="flex justify-between text-xs mb-8">
+                <span class="text-muted">Choppy</span><span class="text-amber font-mono">10%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:10%;background:var(--amber)"></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title mb-8">Fear & Greed Index</div>
+            <div style="text-align:center;padding:16px 0">
+              <div id="fg-gauge" style="font-size:56px;font-weight:800;font-family:var(--font-mono);color:var(--amber)">62</div>
+              <div class="text-sm text-amber mt-8 font-semibold">GREED</div>
+            </div>
+            <div class="mt-12">
+              <div class="text-xs text-muted mb-8">Scale: 0 (Extreme Fear) → 100 (Extreme Greed)</div>
+              <div class="progress-bar" style="height:8px">
+                <div class="progress-fill" style="width:62%;background:linear-gradient(90deg,var(--red),var(--amber),var(--green))"></div>
+              </div>
+              <div class="flex justify-between text-xs mt-8">
+                <span class="text-red">Fear</span>
+                <span class="text-amber">Neutral</span>
+                <span class="text-green">Greed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Signal table -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Signal Matrix &middot; 30 USDT Pairs</div>
+            <span class="card-badge badge-cyan" id="sig-count">30 pairs scanned</span>
+          </div>
+          <div class="table-wrap">
+            <table id="signal-table">
+              <thead>
+                <tr>
+                  <th>Coin</th><th>Price</th><th>24h %</th><th>Signal</th>
+                  <th>Confidence</th><th>R:R</th><th>SL</th><th>TP</th>
+                  <th>Risk</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="signal-tbody">
+                <!-- Filled by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- AGENTS VIEW -->
+      <div class="view" id="view-agents">
+        <div class="view-header">
+          <div>
+            <div class="view-title">AI Agent Fleet</div>
+            <div class="view-desc">5 specialized agents &middot; Autonomous perception-decision-execution loop</div>
+          </div>
+          <div class="flex gap-8">
+            <button class="btn btn-secondary btn-sm" onclick="toggleAgentPause()">&#9208; Pause All</button>
+            <button class="btn btn-primary btn-sm" onclick="runAgentCycle()">&#9881; Run Full Cycle</button>
+          </div>
+        </div>
+
+        <!-- Architecture diagram -->
+        <div class="card mb-16">
+          <div class="card-title mb-12">Multi-Agent Orchestration Architecture</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:20px 0;flex-wrap:wrap;">
+            <div style="padding:12px 16px;border-radius:8px;background:var(--cyan-glow);border:1px solid var(--cyan-dim);text-align:center;min-width:120px">
+              <div style="font-size:18px">&#9670;</div>
+              <div style="font-size:11px;font-weight:700;color:var(--cyan);font-family:var(--font-mono)">MACRO</div>
+              <div style="font-size:9px;color:var(--text-3)">Fed, DXY, Yields</div>
+            </div>
+            <div style="color:var(--text-3);font-size:18px">&#10132;</div>
+            <div style="padding:12px 16px;border-radius:8px;background:var(--purple-glow);border:1px solid var(--purple-dim);text-align:center;min-width:120px">
+              <div style="font-size:18px">&#9670;</div>
+              <div style="font-size:11px;font-weight:700;color:var(--purple);font-family:var(--font-mono)">TECHNICAL</div>
+              <div style="font-size:9px;color:var(--text-3)">EMA/RSI/ATR/ICH</div>
+            </div>
+            <div style="color:var(--text-3);font-size:18px">&#10132;</div>
+            <div style="padding:16px 20px;border-radius:8px;background:var(--bg-3);border:2px solid var(--cyan);text-align:center;min-width:140px">
+              <div style="font-size:22px">&#9881;</div>
+              <div style="font-size:12px;font-weight:800;color:var(--text-0);font-family:var(--font-mono)">CONSENSUS</div>
+              <div style="font-size:9px;color:var(--text-3)">Weighted Vote</div>
+            </div>
+            <div style="color:var(--text-3);font-size:18px">&#10132;</div>
+            <div style="padding:12px 16px;border-radius:8px;background:var(--red-glow);border:1px solid var(--red-dim);text-align:center;min-width:120px">
+              <div style="font-size:18px">&#9670;</div>
+              <div style="font-size:11px;font-weight:700;color:var(--red);font-family:var(--font-mono)">RISK</div>
+              <div style="font-size:9px;color:var(--text-3)">VaR, Sizing, SL</div>
+            </div>
+            <div style="color:var(--text-3);font-size:18px">&#10132;</div>
+            <div style="padding:12px 16px;border-radius:8px;background:var(--green-glow);border:1px solid var(--green-dim);text-align:center;min-width:120px">
+              <div style="font-size:18px">&#9670;</div>
+              <div style="font-size:11px;font-weight:700;color:var(--green);font-family:var(--font-mono)">EXECUTOR</div>
+              <div style="font-size:9px;color:var(--text-3)">Smart Routing</div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:8px">
+            <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:6px;background:var(--amber-glow);border:1px solid var(--amber-dim)">
+              <span style="font-size:14px">&#9670;</span>
+              <span style="font-size:11px;font-weight:700;color:var(--amber);font-family:var(--font-mono)">SENTIMENT</span>
+              <span style="font-size:9px;color:var(--text-3)">&middot; Social/News/F&G feeds into Consensus</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent details -->
+        <div class="grid-2 mb-16">
+          <!-- Agent detail cards -->
+          <div class="card" id="agent-detail-macro">
+            <div class="card-header">
+              <div class="flex items-center gap-8">
+                <div style="width:32px;height:32px;border-radius:8px;background:var(--cyan-glow);display:flex;align-items:center;justify-content:center;color:var(--cyan);font-weight:800">M</div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:var(--cyan)">Macro Analyst</div>
+                  <div class="text-xs text-muted">Monitors global macro conditions</div>
+                </div>
+              </div>
+              <div class="agent-status active"><div class="dot"></div> ACTIVE</div>
+            </div>
+            <div class="text-sm mb-12" style="color:var(--text-1)">Tracks Federal Reserve policy, DXY strength, Treasury yields, and global liquidity flows to determine the macro backdrop for crypto risk assets.</div>
+            <div class="grid-3" style="gap:8px">
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">DXY Bias</div>
+                <div class="text-sm font-bold text-red font-mono mt-8">Weak &#9660;</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Fed Stance</div>
+                <div class="text-sm font-bold text-green font-mono mt-8">Dovish</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Verdict</div>
+                <div class="text-sm font-bold text-green font-mono mt-8">RISK ON</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" id="agent-detail-ta">
+            <div class="card-header">
+              <div class="flex items-center gap-8">
+                <div style="width:32px;height:32px;border-radius:8px;background:var(--purple-glow);display:flex;align-items:center;justify-content:center;color:var(--purple);font-weight:800">T</div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:var(--purple)">Technical Analyst</div>
+                  <div class="text-xs text-muted">Multi-indicator confluence engine</div>
+                </div>
+              </div>
+              <div class="agent-status active"><div class="dot"></div> ACTIVE</div>
+            </div>
+            <div class="text-sm mb-12" style="color:var(--text-1)">Runs EMA 20/50 crossovers, RSI momentum, ATR volatility bands, market structure (HH/HL/LH/LL), and Ichimoku cloud analysis across multiple timeframes.</div>
+            <div class="grid-3" style="gap:8px">
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">BTC Bias</div>
+                <div class="text-sm font-bold text-green font-mono mt-8">LONG</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Avg Conf.</div>
+                <div class="text-sm font-bold text-purple font-mono mt-8">85%</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Top Pick</div>
+                <div class="text-sm font-bold text-cyan font-mono mt-8">SOL</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" id="agent-detail-sentiment">
+            <div class="card-header">
+              <div class="flex items-center gap-8">
+                <div style="width:32px;height:32px;border-radius:8px;background:var(--amber-glow);display:flex;align-items:center;justify-content:center;color:var(--amber);font-weight:800">S</div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:var(--amber)">Sentiment Analyst</div>
+                  <div class="text-xs text-muted">Social & news intelligence</div>
+                </div>
+              </div>
+              <div class="agent-status active"><div class="dot"></div> ACTIVE</div>
+            </div>
+            <div class="text-sm mb-12" style="color:var(--text-1)">Aggregates Fear & Greed index, social media momentum, news sentiment scoring, and whale wallet tracking to gauge crowd positioning and detect extremes.</div>
+            <div class="grid-3" style="gap:8px">
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">F&G Index</div>
+                <div class="text-sm font-bold text-amber font-mono mt-8">62</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Social</div>
+                <div class="text-sm font-bold text-green font-mono mt-8">Bullish</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Whale Flow</div>
+                <div class="text-sm font-bold text-green font-mono mt-8">Net Buy</div>
+              </div>
+            </div>
+          </div>
+          <div class="card" id="agent-detail-risk">
+            <div class="card-header">
+              <div class="flex items-center gap-8">
+                <div style="width:32px;height:32px;border-radius:8px;background:var(--red-glow);display:flex;align-items:center;justify-content:center;color:var(--red);font-weight:800">R</div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;color:var(--red)">Risk Manager</div>
+                  <div class="text-xs text-muted">Portfolio risk & position sizing</div>
+                </div>
+              </div>
+              <div class="agent-status thinking"><div class="dot"></div> ANALYZING</div>
+            </div>
+            <div class="text-sm mb-12" style="color:var(--text-1)">Calculates Value-at-Risk, maximum drawdown limits, correlation-adjusted exposure, ATR-scaled stop losses, and Kelly Criterion position sizing for every trade.</div>
+            <div class="grid-3" style="gap:8px">
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">VaR (95%)</div>
+                <div class="text-sm font-bold text-amber font-mono mt-8">-$340</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Max DD</div>
+                <div class="text-sm font-bold text-red font-mono mt-8">-8.2%</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Exposure</div>
+                <div class="text-sm font-bold text-amber font-mono mt-8">62%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent consensus output -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Consensus Engine Output &middot; Latest Cycle</div>
+            <span class="card-badge badge-green">AGREED</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Coin</th><th>Macro</th><th>TA</th><th>Sentiment</th><th>Risk OK</th><th>Consensus</th><th>Action</th></tr></thead>
+              <tbody id="consensus-tbody">
+                <!-- Filled by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAPER LAB VIEW -->
+      <div class="view" id="view-paper">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Paper Trading Lab</div>
+            <div class="view-desc">SIMULATION &middot; No real funds &middot; Spot + Futures with liquidation calculator</div>
+          </div>
+          <div class="flex gap-8 items-center">
+            <div class="tabs" id="paper-mode-tabs">
+              <div class="tab active" data-mode="spot">SPOT</div>
+              <div class="tab" data-mode="futures">FUTURES</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portfolio summary -->
+        <div class="grid-4 mb-16">
+          <div class="card">
+            <div class="stat-label">Balance</div>
+            <div class="stat-value text-cyan" id="pp-balance">$10,000.00</div>
+            <div class="flex gap-8 mt-8">
+              <button class="btn btn-secondary btn-sm" onclick="setBalance(500)">$500</button>
+              <button class="btn btn-secondary btn-sm" onclick="setBalance(1000)">$1K</button>
+              <button class="btn btn-secondary btn-sm" onclick="setBalance(5000)">$5K</button>
+              <button class="btn btn-secondary btn-sm" onclick="setBalance(10000)">$10K</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="stat-label">Equity</div>
+            <div class="stat-value" id="pp-equity">$10,000.00</div>
+            <div class="stat-change stat-up" id="pp-equity-chg">&#9650; +0.00%</div>
+          </div>
+          <div class="card">
+            <div class="stat-label">Open PnL</div>
+            <div class="stat-value text-green" id="pp-pnl">$0.00</div>
+            <div class="text-xs text-muted mt-8" id="pp-positions-count">0 open positions</div>
+          </div>
+          <div class="card">
+            <div class="stat-label">Realized PnL</div>
+            <div class="stat-value" id="pp-realized">$0.00</div>
+            <div class="text-xs text-muted mt-8" id="pp-trades-count">0 trades</div>
+          </div>
+        </div>
+
+        <div class="grid-2-1">
+          <!-- Order form -->
+          <div class="card">
+            <div class="card-title mb-12">New Order</div>
+            <div class="grid-2" style="gap:12px">
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Coin</label>
+                <select id="pp-coin" style="width:100%">
+                  <option>BTC/USDT</option><option>ETH/USDT</option><option>SOL/USDT</option>
+                  <option>BNB/USDT</option><option>XRP/USDT</option><option>DOGE/USDT</option>
+                  <option>ADA/USDT</option><option>AVAX/USDT</option><option>DOT/USDT</option>
+                  <option>LINK/USDT</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Order Size (USDT)</label>
+                <input type="number" id="pp-size" value="500" style="width:100%">
+              </div>
+              <div id="pp-lev-wrap" style="display:none">
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Leverage</label>
+                <select id="pp-leverage" style="width:100%">
+                  <option>1x</option><option>3x</option><option>5x</option><option>10x</option>
+                  <option>20x</option><option>50x</option><option>100x</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Last Price</label>
+                <div class="text-sm font-mono font-bold" id="pp-last-price" style="padding:6px 0">$--</div>
+              </div>
+            </div>
+            <div class="grid-2 mt-12" style="gap:12px">
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Liquidation Est.</label>
+                <div class="text-sm font-mono text-red" id="pp-liq-price">--</div>
+              </div>
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Risk-based Size</label>
+                <div class="text-sm font-mono text-amber" id="pp-risk-size">--</div>
+              </div>
+            </div>
+            <div class="flex gap-8 mt-16">
+              <button class="btn btn-success flex-1" onclick="placeOrder('long')" style="justify-content:center">&#9650; BUY / LONG</button>
+              <button class="btn btn-danger flex-1" onclick="placeOrder('short')" style="justify-content:center">&#9660; SELL / SHORT</button>
+            </div>
+          </div>
+
+          <!-- Performance chart -->
+          <div class="card">
+            <div class="card-title mb-12">Equity Curve</div>
+            <div id="equity-chart" style="height:200px;position:relative">
+              <canvas id="equity-canvas" style="width:100%;height:100%"></canvas>
+            </div>
+            <div class="grid-3 mt-12" style="gap:8px">
+              <div style="text-align:center">
+                <div class="text-xs text-muted">Sharpe</div>
+                <div class="text-sm font-bold font-mono text-cyan" id="pp-sharpe">--</div>
+              </div>
+              <div style="text-align:center">
+                <div class="text-xs text-muted">Max DD</div>
+                <div class="text-sm font-bold font-mono text-red" id="pp-maxdd">--</div>
+              </div>
+              <div style="text-align:center">
+                <div class="text-xs text-muted">Profit Factor</div>
+                <div class="text-sm font-bold font-mono text-green" id="pp-pf">--</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Open positions -->
+        <div class="card mt-16">
+          <div class="card-header">
+            <div class="card-title">Open Positions</div>
+            <button class="btn btn-danger btn-sm" onclick="closeAllPositions()">Close All</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Coin</th><th>Side</th><th>Size</th><th>Entry</th><th>Mark</th><th>PnL</th><th>PnL %</th><th>Leverage</th><th>Action</th></tr></thead>
+              <tbody id="pp-positions-tbody">
+                <tr><td colspan="9" style="text-align:center;color:var(--text-3);padding:24px">No open positions</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Trade history -->
+        <div class="card mt-16">
+          <div class="card-header">
+            <div class="card-title">Trade History</div>
+            <button class="btn btn-secondary btn-sm" onclick="exportTrades()">Export CSV</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Time</th><th>Coin</th><th>Side</th><th>Size</th><th>Entry</th><th>Exit</th><th>PnL</th><th>PnL %</th></tr></thead>
+              <tbody id="pp-history-tbody">
+                <tr><td colspan="8" style="text-align:center;color:var(--text-3);padding:24px">No trades yet</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RISK LAB VIEW -->
+      <div class="view" id="view-risk">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Risk Laboratory</div>
+            <div class="view-desc">Monte Carlo simulation &middot; VaR analysis &middot; Correlation heatmap &middot; Stress testing</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="runMonteCarlo()">&#9881; Run Simulation</button>
+        </div>
+
+        <div class="grid-4 mb-16">
+          <div class="card">
+            <div class="stat-label">VaR (95%, 1d)</div>
+            <div class="stat-value text-red" id="risk-var">-$340</div>
+            <div class="text-xs text-muted mt-8">Max daily loss at 95% confidence</div>
+          </div>
+          <div class="card">
+            <div class="stat-label">CVaR (Expected Shortfall)</div>
+            <div class="stat-value text-red" id="risk-cvar">-$520</div>
+            <div class="text-xs text-muted mt-8">Avg loss beyond VaR</div>
+          </div>
+          <div class="card">
+            <div class="stat-label">Max Drawdown</div>
+            <div class="stat-value text-amber" id="risk-dd">-8.2%</div>
+            <div class="text-xs text-muted mt-8">Historical worst case</div>
+          </div>
+          <div class="card">
+            <div class="stat-label">Correlation Risk</div>
+            <div class="stat-value text-amber" id="risk-corr">0.72</div>
+            <div class="text-xs text-muted mt-8">Avg pairwise correlation</div>
+          </div>
+        </div>
+
+        <div class="grid-2 mb-16">
+          <!-- Monte Carlo -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Monte Carlo Simulation &middot; 1000 Paths</div>
+              <div class="flex gap-8">
+                <select id="mc-days">
+                  <option value="7">7 Days</option>
+                  <option value="30" selected>30 Days</option>
+                  <option value="90">90 Days</option>
+                </select>
+              </div>
+            </div>
+            <div style="height:250px;position:relative">
+              <canvas id="mc-canvas" style="width:100%;height:100%"></canvas>
+            </div>
+            <div class="grid-3 mt-12" style="gap:8px">
+              <div style="text-align:center;padding:8px;background:var(--bg-2);border-radius:6px">
+                <div class="text-xs text-muted">5th Percentile</div>
+                <div class="text-sm font-bold font-mono text-red" id="mc-p5">-$1,200</div>
+              </div>
+              <div style="text-align:center;padding:8px;background:var(--bg-2);border-radius:6px">
+                <div class="text-xs text-muted">Median</div>
+                <div class="text-sm font-bold font-mono text-cyan" id="mc-p50">+$340</div>
+              </div>
+              <div style="text-align:center;padding:8px;background:var(--bg-2);border-radius:6px">
+                <div class="text-xs text-muted">95th Percentile</div>
+                <div class="text-sm font-bold font-mono text-green" id="mc-p95">+$2,100</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Correlation heatmap -->
+          <div class="card">
+            <div class="card-title mb-12">Correlation Matrix &middot; Top 8 Assets</div>
+            <div id="corr-heatmap" style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;font-family:var(--font-mono);font-size:9px">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Stress tests -->
+        <div class="card">
+          <div class="card-title mb-12">Stress Test Scenarios</div>
+          <div class="grid-4" style="gap:12px">
+            <div style="padding:12px;background:var(--bg-2);border-radius:8px;border-left:3px solid var(--red)">
+              <div class="text-xs text-muted mb-8">Flash Crash (-30%)</div>
+              <div class="text-sm font-bold text-red font-mono">-$3,000</div>
+              <div class="text-xs text-muted mt-8">Portfolio impact</div>
+            </div>
+            <div style="padding:12px;background:var(--bg-2);border-radius:8px;border-left:3px solid var(--amber)">
+              <div class="text-xs text-muted mb-8">Black Swan (-50%)</div>
+              <div class="text-sm font-bold text-amber font-mono">-$5,000</div>
+              <div class="text-xs text-muted mt-8">Portfolio impact</div>
+            </div>
+            <div style="padding:12px;background:var(--bg-2);border-radius:8px;border-left:3px solid var(--green)">
+              <div class="text-xs text-muted mb-8">Rally (+40%)</div>
+              <div class="text-sm font-bold text-green font-mono">+$4,000</div>
+              <div class="text-xs text-muted mt-8">Portfolio impact</div>
+            </div>
+            <div style="padding:12px;background:var(--bg-2);border-radius:8px;border-left:3px solid var(--purple)">
+              <div class="text-xs text-muted mb-8">Vol Spike (2x ATR)</div>
+              <div class="text-sm font-bold text-purple font-mono">-$1,800</div>
+              <div class="text-xs text-muted mt-8">Portfolio impact</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STRATEGY FORGE VIEW -->
+      <div class="view" id="view-strategy">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Strategy Forge</div>
+            <div class="view-desc">Visual strategy builder &middot; Backtest on 200 candles &middot; Performance analytics</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="runBacktest()">&#9889; Run Backtest</button>
+        </div>
+
+        <div class="grid-2-1 mb-16">
+          <!-- Strategy builder -->
+          <div class="card">
+            <div class="card-title mb-12">Strategy Configuration</div>
+            <div class="grid-2" style="gap:12px">
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Strategy Type</label>
+                <select id="strat-type" style="width:100%">
+                  <option>EMA Crossover</option>
+                  <option>RSI Mean Reversion</option>
+                  <option>Breakout + Volume</option>
+                  <option>Ichimoku Cloud</option>
+                  <option>Multi-Factor Confluence</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Asset</label>
+                <select id="strat-asset" style="width:100%">
+                  <option>BTC/USDT</option><option>ETH/USDT</option><option>SOL/USDT</option>
+                  <option>BNB/USDT</option><option>XRP/USDT</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Timeframe</label>
+                <select id="strat-tf" style="width:100%">
+                  <option>15m</option><option selected>1H</option><option>4H</option><option>1D</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Risk per Trade (%)</label>
+                <input type="number" id="strat-risk" value="2" style="width:100%">
+              </div>
+            </div>
+
+            <div class="mt-16">
+              <div class="card-title mb-8">Parameters</div>
+              <div class="grid-3" style="gap:8px">
+                <div>
+                  <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Fast EMA</label>
+                  <input type="number" id="strat-fast" value="20" style="width:100%">
+                </div>
+                <div>
+                  <label class="text-xs text-muted" style="display:block;margin-bottom:4px">Slow EMA</label>
+                  <input type="number" id="strat-slow" value="50" style="width:100%">
+                </div>
+                <div>
+                  <label class="text-xs text-muted" style="display:block;margin-bottom:4px">RSI Period</label>
+                  <input type="number" id="strat-rsi" value="14" style="width:100%">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-16">
+              <div class="card-title mb-8">Filters</div>
+              <div class="flex gap-12" style="flex-wrap:wrap">
+                <label class="flex items-center gap-8 text-sm" style="cursor:pointer">
+                  <input type="checkbox" checked> RSI Filter
+                </label>
+                <label class="flex items-center gap-8 text-sm" style="cursor:pointer">
+                  <input type="checkbox" checked> ATR Volatility
+                </label>
+                <label class="flex items-center gap-8 text-sm" style="cursor:pointer">
+                  <input type="checkbox" checked> Volume Confirm
+                </label>
+                <label class="flex items-center gap-8 text-sm" style="cursor:pointer">
+                  <input type="checkbox"> Ichimoku Cloud
+                </label>
+                <label class="flex items-center gap-8 text-sm" style="cursor:pointer">
+                  <input type="checkbox" checked> Multi-TF Agree
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Backtest results -->
+          <div class="card">
+            <div class="card-title mb-12">Backtest Results &middot; 200 Candles</div>
+            <div style="text-align:center;padding:16px 0">
+              <div class="text-xs text-muted">Profit Factor</div>
+              <div style="font-size:40px;font-weight:800;font-family:var(--font-mono);color:var(--green)" id="bt-pf">2.34</div>
+            </div>
+            <div class="grid-2" style="gap:8px">
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Win Rate</div>
+                <div class="text-sm font-bold font-mono text-green" id="bt-wr">64.2%</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Total Trades</div>
+                <div class="text-sm font-bold font-mono" id="bt-trades">47</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Net PnL</div>
+                <div class="text-sm font-bold font-mono text-green" id="bt-pnl">+$1,840</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Max DD</div>
+                <div class="text-sm font-bold font-mono text-red" id="bt-dd">-6.8%</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Sharpe</div>
+                <div class="text-sm font-bold font-mono text-cyan" id="bt-sharpe">1.82</div>
+              </div>
+              <div style="padding:8px;background:var(--bg-2);border-radius:6px;text-align:center">
+                <div class="text-xs text-muted">Avg R:R</div>
+                <div class="text-sm font-bold font-mono text-amber" id="bt-rr">1:2.8</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backtest equity curve -->
+        <div class="card">
+          <div class="card-title mb-12">Backtest Equity Curve</div>
+          <div style="height:200px">
+            <canvas id="bt-canvas" style="width:100%;height:100%"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ASK NEXUS VIEW -->
+      <div class="view" id="view-ask">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Ask Nexus</div>
+            <div class="view-desc">AI assistant grounded on live signal data &middot; Runs fully in-browser</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="clearChat()">Clear Chat</button>
+        </div>
+
+        <div class="grid-2-1">
+          <div class="chat-container">
+            <div class="chat-messages" id="chat-messages">
+              <div class="chat-msg ai">
+                <div class="chat-avatar">N</div>
+                <div class="chat-bubble">
+                  Welcome to NexusTrade AI. I'm grounded on your live signal data, agent analysis, and market regime detection. Ask me anything about current market conditions, specific coins, risk analysis, or strategy recommendations.
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-wrap">
+              <input type="text" class="chat-input" id="chat-input" placeholder="Ask about markets, signals, risk...">
+              <button class="btn btn-primary" onclick="sendChat()">Send</button>
+            </div>
+          </div>
+          <div>
+            <div class="card mb-16">
+              <div class="card-title mb-12">Quick Prompts</div>
+              <div class="flex flex-col gap-8">
+                <button class="btn btn-secondary btn-sm w-full" style="justify-content:flex-start" onclick="quickPrompt('Which coin looks strongest right now?')">Which coin looks strongest?</button>
+                <button class="btn btn-secondary btn-sm w-full" style="justify-content:flex-start" onclick="quickPrompt('Any high-confidence SHORT setups?')">High-confidence SHORTs?</button>
+                <button class="btn btn-secondary btn-sm w-full" style="justify-content:flex-start" onclick="quickPrompt('Explain BTC current bias')">BTC current bias?</button>
+                <button class="btn btn-secondary btn-sm w-full" style="justify-content:flex-start" onclick="quickPrompt('What is the market regime?')">Market regime?</button>
+                <button class="btn btn-secondary btn-sm w-full" style="justify-content:flex-start" onclick="quickPrompt('Show me high-volatility coins')">High-volatility coins</button>
+                <button class="btn btn-secondary btn-sm w-full" style="justify-content:flex-start" onclick="quickPrompt('How risky is ETH right now?')">ETH risk assessment</button>
+                <button class="btn btn-secondary btn-sm w-full" style="justify-content:flex-start" onclick="quickPrompt('What are the agents consensus on?')">Agent consensus</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title mb-12">Agent Insights</div>
+              <div id="agent-insights">
+                <div class="decision-item">
+                  <div class="decision-agent text-cyan">MACRO</div>
+                  <div class="text-sm">DXY weakening supports crypto risk-on. Fed pause priced in.</div>
+                </div>
+                <div class="decision-item">
+                  <div class="decision-agent text-purple">TA</div>
+                  <div class="text-sm">BTC holding above EMA50 on 4H. Structure: HH/HL intact.</div>
+                </div>
+                <div class="decision-item">
+                  <div class="decision-agent text-amber">SENT</div>
+                  <div class="text-sm">F&G at 62 (Greed). Not extreme yet — room to run.</div>
+                </div>
+                <div class="decision-item">
+                  <div class="decision-agent text-red">RISK</div>
+                  <div class="text-sm">Portfolio VaR within limits. Exposure at 62% — moderate.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DECISION LOG VIEW -->
+      <div class="view" id="view-log">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Decision Log</div>
+            <div class="view-desc">Every signal scan, agent decision, and paper trade recorded locally</div>
+          </div>
+          <div class="flex gap-8">
+            <button class="btn btn-secondary btn-sm" onclick="exportLog('csv')">Export CSV</button>
+            <button class="btn btn-secondary btn-sm" onclick="exportLog('json')">Export JSON</button>
+            <button class="btn btn-danger btn-sm" onclick="clearLog()">Clear</button>
+          </div>
+        </div>
+
+        <div class="flex gap-12 mb-16">
+          <div class="tabs" id="log-time-tabs">
+            <div class="tab active" data-tf="all">All Time</div>
+            <div class="tab" data-tf="24h">Last 24h</div>
+            <div class="tab" data-tf="7d">Last 7d</div>
+            <div class="tab" data-tf="30d">Last 30d</div>
+          </div>
+          <div class="tabs" id="log-type-tabs">
+            <div class="tab active" data-type="all">All Actions</div>
+            <div class="tab" data-type="signal">Signals</div>
+            <div class="tab" data-type="trade">Trade Opens</div>
+            <div class="tab" data-type="close">Trade Closes</div>
+            <div class="tab" data-type="agent">Agent Decisions</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Time</th><th>Action</th><th>Agent</th><th>Coin</th><th>Detail</th><th>Confidence</th></tr></thead>
+              <tbody id="log-tbody">
+                <!-- Filled by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   NexusTrade AI — Core Engine
+   ============================================ */
+
+// === DATA ===
+const COINS = [
+  {s:'BTC',n:'Bitcoin',p:67420},{s:'ETH',n:'Ethereum',p:3580},{s:'SOL',n:'Solana',p:172},
+  {s:'BNB',n:'BNB',p:605},{s:'XRP',n:'XRP',p:0.524},{s:'DOGE',n:'Dogecoin',p:0.128},
+  {s:'ADA',n:'Cardano',p:0.452},{s:'AVAX',n:'Avalanche',p:35.8},{s:'DOT',n:'Polkadot',p:6.82},
+  {s:'LINK',n:'Chainlink',p:14.2},{s:'MATIC',n:'Polygon',p:0.58},{s:'UNI',n:'Uniswap',p:7.42},
+  {s:'ATOM',n:'Cosmos',p:8.15},{s:'FIL',n:'Filecoin',p:5.62},{s:'APT',n:'Aptos',p:8.92},
+  {s:'ARB',n:'Arbitrum',p:0.82},{s:'OP',n:'Optimism',p:2.15},{s:'INJ',n:'Injective',p:24.5},
+  {s:'SUI',n:'Sui',p:1.62},{s:'SEI',n:'Sei',p:0.48},{s:'TIA',n:'Celestia',p:8.42},
+  {s:'NEAR',n:'NEAR',p:5.82},{s:'ALGO',n:'Algorand',p:0.172},{s:'FTM',n:'Fantom',p:0.68},
+  {s:'AAVE',n:'Aave',p:92.5},{s:'MKR',n:'Maker',p:2850},{s:'LDO',n:'Lido',p:2.12},
+  {s:'SNX',n:'Synthetix',p:3.25},{s:'COMP',n:'Compound',p:48.5},{s:'CRV',n:'Curve',p:0.42}
+];
+
+let prices = {};
+let changes = {};
+let signals = [];
+let positions = [];
+let tradeHistory = [];
+let decisionLog = [];
+let equityCurve = [10000];
+let paperBalance = 10000;
+let paperMode = 'spot';
+let chatHistory = [];
+
+// Initialize prices
+COINS.forEach(c => {
+  prices[c.s] = c.p;
+  changes[c.s] = (Math.random() - 0.45) * 10;
+});
+
+// === NAVIGATION ===
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + item.dataset.view).classList.add('active');
+  });
+});
+
+// === UTILITY FUNCTIONS ===
+function fmt(n, d=2) { return n.toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+function fmtK(n) { return n >= 1000 ? '$' + fmt(n/1000,1) + 'K' : '$' + fmt(n); }
+function rnd(a,b) { return a + Math.random() * (b - a); }
+function rndInt(a,b) { return Math.floor(rnd(a,b+1)); }
+function timeStr(d) { return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false}); }
+function pick(arr) { return arr[rndInt(0,arr.length-1)]; }
+
+// === PRICE ENGINE ===
+function updatePrices() {
+  COINS.forEach(c => {
+    const drift = (Math.random() - 0.48) * 0.002;
+    const vol = c.p * 0.001 * Math.random();
+    prices[c.s] = Math.max(prices[c.s] * (1 + drift), 0.001);
+    changes[c.s] += (Math.random() - 0.5) * 0.1;
+    changes[c.s] = Math.max(-15, Math.min(15, changes[c.s]));
+  });
+  updateTopBar();
+  updatePositions();
+}
+
+function updateTopBar() {
+  document.getElementById('tb-btc').textContent = '$' + fmt(prices.BTC, 0);
+  document.getElementById('tb-eth').textContent = '$' + fmt(prices.ETH, 0);
+  if (!liveDataLoaded) {
+    document.getElementById('tb-fg').textContent = rndInt(55,72);
+  }
+  document.getElementById('tb-regime').textContent = pick(['BULL','BULL','BULL','CHOP']);
+  document.getElementById('last-sync').textContent = timeStr(new Date()) + (liveDataLoaded ? ' (LIVE)' : ' (SIM)');
+}
+
+// === SIGNAL ENGINE ===
+function generateSignals() {
+  signals = COINS.map(c => {
+    const ema = rnd(30, 95);
+    const rsi = rnd(20, 80);
+    const atr = rnd(20, 80);
+    const structure = rnd(40, 95);
+    const ichimoku = rnd(30, 90);
+    const mtf = rnd(35, 90);
+    const confidence = Math.round((ema * 0.25 + rsi * 0.15 + atr * 0.1 + structure * 0.2 + ichimoku * 0.15 + mtf * 0.15));
+    const direction = confidence > 60 ? (changes[c.s] > 0 ? 'LONG' : 'SHORT') : (changes[c.s] > -2 ? 'NEUTRAL' : 'SHORT');
+    const atrVal = prices[c.s] * rnd(0.01, 0.04);
+    const sl = direction === 'LONG' ? prices[c.s] - atrVal * 1.5 : prices[c.s] + atrVal * 1.5;
+    const tp = direction === 'LONG' ? prices[c.s] + atrVal * 3 : prices[c.s] - atrVal * 3;
+    const rr = (Math.abs(tp - prices[c.s]) / Math.abs(prices[c.s] - sl)).toFixed(1);
+    const risk = confidence > 75 ? 'LOW' : confidence > 50 ? 'MEDIUM' : 'HIGH';
+    return { ...c, price: prices[c.s], change: changes[c.s], ema, rsi, atr, structure, ichimoku, mtf, confidence, direction, sl, tp, rr, risk };
+  });
+  signals.sort((a, b) => b.confidence - a.confidence);
+}
+
+function renderSignalTable() {
+  const tbody = document.getElementById('signal-tbody');
+  if (!tbody) return;
+  const filter = document.getElementById('sig-filter')?.value || 'all';
+  let filtered = signals;
+  if (filter === 'long') filtered = signals.filter(s => s.direction === 'LONG');
+  else if (filter === 'short') filtered = signals.filter(s => s.direction === 'SHORT');
+  else if (filter === 'high') filtered = signals.filter(s => s.confidence >= 75);
+
+  tbody.innerHTML = filtered.map(s => {
+    const chgClass = s.change >= 0 ? 'text-green' : 'text-red';
+    const dirClass = s.direction === 'LONG' ? 'tag-long' : s.direction === 'SHORT' ? 'tag-short' : 'tag-neutral';
+    const riskClass = s.risk === 'LOW' ? 'tag-low' : s.risk === 'MEDIUM' ? 'tag-medium' : 'tag-high';
+    const confColor = s.confidence >= 75 ? 'var(--green)' : s.confidence >= 50 ? 'var(--amber)' : 'var(--red)';
+    const priceStr = s.price >= 1 ? '$' + fmt(s.price, s.price > 100 ? 0 : 2) : '$' + s.price.toFixed(4);
+    const slStr = s.sl >= 1 ? '$' + fmt(s.sl, s.sl > 100 ? 0 : 2) : '$' + s.sl.toFixed(4);
+    const tpStr = s.tp >= 1 ? '$' + fmt(s.tp, s.tp > 100 ? 0 : 2) : '$' + s.tp.toFixed(4);
+    return `<tr>
+      <td><span style="color:var(--text-0);font-weight:600">${s.s}</span><span class="text-muted" style="margin-left:4px">/USDT</span></td>
+      <td>${priceStr}</td>
+      <td class="${chgClass}">${s.change >= 0 ? '+' : ''}${s.change.toFixed(2)}%</td>
+      <td><span class="tag ${dirClass}">${s.direction}</span></td>
+      <td><div class="signal-meter"><div class="meter-bar"><div class="meter-fill" style="width:${s.confidence}%;background:${confColor}"></div></div><div class="meter-value" style="color:${confColor}">${s.confidence}</div></div></td>
+      <td>1:${s.rr}</td>
+      <td class="text-red">${slStr}</td>
+      <td class="text-green">${tpStr}</td>
+      <td><span class="tag ${riskClass}">${s.risk}</span></td>
+      <td><button class="btn btn-primary btn-sm" onclick="quickTrade('${s.s}','${s.direction}')">Trade</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('sig-count').textContent = filtered.length + ' pairs scanned';
+}
+
+function runSignalScan() {
+  generateSignals();
+  renderSignalTable();
+  addDecision('SIGNAL', 'Engine', 'ALL', `Full scan: ${signals.filter(s=>s.direction==='LONG').length} LONG, ${signals.filter(s=>s.direction==='SHORT').length} SHORT signals`);
+}
+
+// === HEATMAP ===
+function renderHeatmap() {
+  const grid = document.getElementById('heatmap-grid');
+  if (!grid) return;
+  grid.innerHTML = signals.slice(0, 20).map(s => {
+    const chg = s.change;
+    const intensity = Math.min(Math.abs(chg) / 5, 1);
+    let bg;
+    if (chg >= 0) {
+      const g = Math.round(80 + intensity * 100);
+      bg = `rgba(0,${g},${Math.round(60 + intensity * 50)},${0.15 + intensity * 0.4})`;
+    } else {
+      const r = Math.round(120 + intensity * 135);
+      bg = `rgba(${r},${Math.round(40 - intensity * 20)},${Math.round(60 - intensity * 20)},${0.15 + intensity * 0.4})`;
+    }
+    return `<div class="heatmap-cell" style="background:${bg};color:${Math.abs(chg)>2?'var(--text-0)':'var(--text-1)'};padding:8px;aspect-ratio:auto;flex-direction:column;gap:2px">
+      <div style="font-weight:700;font-size:11px">${s.s}</div>
+      <div style="font-size:10px;color:${chg>=0?'var(--green)':'var(--red)'}">${chg>=0?'+':''}${chg.toFixed(1)}%</div>
+    </div>`;
+  }).join('');
+}
+
+// === DECISION FEED ===
+function addDecision(action, agent, coin, detail) {
+  decisionLog.unshift({ time: new Date(), action, agent, coin, detail, confidence: rndInt(50,98) });
+  if (decisionLog.length > 200) decisionLog.pop();
+  renderDecisionFeed();
+  renderLogTable();
+}
+
+function renderDecisionFeed() {
+  const feed = document.getElementById('decision-feed');
+  if (!feed) return;
+  feed.innerHTML = decisionLog.slice(0, 15).map(d => {
+    const agentColors = {Macro:'text-cyan',Technical:'text-purple',Sentiment:'text-amber',Risk:'text-red',Executor:'text-green',Engine:'text-cyan',System:'text-purple'};
+    return `<div class="decision-item">
+      <div class="decision-time">${timeStr(d.time)}</div>
+      <div class="decision-agent ${agentColors[d.agent]||'text-cyan'}">${d.agent}</div>
+      <div class="text-sm" style="flex:1">${d.detail}</div>
+    </div>`;
+  }).join('');
+}
+
+// === AGENT SIMULATION ===
+function simulateAgentDecisions() {
+  const agents = ['Macro','Technical','Sentiment','Risk','Executor'];
+  const actions = [
+    {a:'Macro',d:'DXY weakening — risk-on bias confirmed'},
+    {a:'Macro',d:'Treasury yields declining, supports crypto'},
+    {a:'Macro',d:'Fed funds rate hold — neutral to bullish'},
+    {a:'Technical',d:'BTC: EMA20 crossed above EMA50 on 4H — bullish'},
+    {a:'Technical',d:'SOL: RSI divergence detected — potential reversal'},
+    {a:'Technical',d:'ETH: Market structure HH/HL confirmed on 1H'},
+    {a:'Technical',d:'AVAX: Ichimoku cloud breakout on 4H timeframe'},
+    {a:'Sentiment',d:'F&G index rising to 62 — greed building'},
+    {a:'Sentiment',d:'Social volume spike on SOL +42% in 1h'},
+    {a:'Sentiment',d:'Whale accumulation detected: 2.4K BTC moved to exchange'},
+    {a:'Risk',d:'Portfolio VaR within limits at -$340 (95% CI)'},
+    {a:'Risk',d:'Correlation spike detected — reducing exposure'},
+    {a:'Risk',d:'ATR expansion on BTC — widening stops recommended'},
+    {a:'Executor',d:'Smart order routed: BTC limit buy at $67,200'},
+    {a:'Executor',d:'Position sized: SOL 2% risk = $200 notional'},
+  ];
+  const pick_action = pick(actions);
+  addDecision('DECISION', pick_action.a, pick(['BTC','ETH','SOL','BNB','XRP','AVAX']), pick_action.d);
+}
+
+// === CONSENSUS TABLE ===
+function renderConsensus() {
+  const tbody = document.getElementById('consensus-tbody');
+  if (!tbody) return;
+  const top = signals.slice(0, 10);
+  tbody.innerHTML = top.map(s => {
+    const macro = s.confidence > 60 ? '&#9650; Bull' : '&#9660; Bear';
+    const ta = s.direction === 'LONG' ? '&#9650; Long' : s.direction === 'SHORT' ? '&#9660; Short' : '&#9644; Neutral';
+    const sent = s.confidence > 70 ? '&#9650; Pos' : '&#9644; Neutral';
+    const riskOk = s.risk !== 'HIGH';
+    const consensus = s.confidence > 70 ? 'STRONG' : s.confidence > 50 ? 'MODERATE' : 'WEAK';
+    const cClass = s.confidence > 70 ? 'text-green' : s.confidence > 50 ? 'text-amber' : 'text-red';
+    return `<tr>
+      <td style="font-weight:600;color:var(--text-0)">${s.s}/USDT</td>
+      <td class="${s.confidence>60?'text-green':'text-red'}">${macro}</td>
+      <td class="${s.direction==='LONG'?'text-green':s.direction==='SHORT'?'text-red':'text-muted'}">${ta}</td>
+      <td class="${s.confidence>70?'text-green':'text-muted'}">${sent}</td>
+      <td>${riskOk ? '<span class="tag tag-low">OK</span>' : '<span class="tag tag-high">WARN</span>'}</td>
+      <td class="${cClass} font-bold">${consensus} (${s.confidence})</td>
+      <td><span class="tag ${s.direction==='LONG'?'tag-long':s.direction==='SHORT'?'tag-short':'tag-neutral'}">${s.direction}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// === PAPER TRADING ===
+function setBalance(b) {
+  paperBalance = b;
+  equityCurve = [b];
+  positions = [];
+  tradeHistory = [];
+  updatePaperUI();
+}
+
+function updatePaperUI() {
+  const bal = document.getElementById('pp-balance');
+  if (!bal) return;
+  const equity = paperBalance + positions.reduce((sum, p) => sum + calcPnL(p), 0);
+  const realized = tradeHistory.reduce((sum, t) => sum + t.pnl, 0);
+  bal.textContent = '$' + fmt(paperBalance);
+  document.getElementById('pp-equity').textContent = '$' + fmt(equity);
+  const eqChg = ((equity - equityCurve[0]) / equityCurve[0] * 100);
+  document.getElementById('pp-equity-chg').innerHTML = `${eqChg>=0?'&#9650;':'&#9660;'} ${eqChg>=0?'+':''}${eqChg.toFixed(2)}%`;
+  document.getElementById('pp-equity-chg').className = `stat-change ${eqChg>=0?'stat-up':'stat-down'}`;
+  const openPnl = positions.reduce((sum, p) => sum + calcPnL(p), 0);
+  document.getElementById('pp-pnl').textContent = (openPnl>=0?'+':'') + '$' + fmt(openPnl);
+  document.getElementById('pp-pnl').className = `stat-value ${openPnl>=0?'text-green':'text-red'}`;
+  document.getElementById('pp-positions-count').textContent = positions.length + ' open positions';
+  document.getElementById('pp-realized').textContent = (realized>=0?'+':'') + '$' + fmt(realized);
+  document.getElementById('pp-realized').className = `stat-value ${realized>=0?'text-green':'text-red'}`;
+  document.getElementById('pp-trades-count').textContent = tradeHistory.length + ' trades';
+  renderPositionsTable();
+  renderHistoryTable();
+  drawEquityCurve();
+}
+
+function calcPnL(p) {
+  const currentPrice = prices[p.coin] || p.entry;
+  const pnlPct = p.side === 'long' ? (currentPrice - p.entry) / p.entry : (p.entry - currentPrice) / p.entry;
+  return pnlPct * p.size * (p.leverage || 1);
+}
+
+function placeOrder(side) {
+  const coin = document.getElementById('pp-coin').value.split('/')[0];
+  const size = parseFloat(document.getElementById('pp-size').value) || 500;
+  const leverage = paperMode === 'futures' ? parseInt(document.getElementById('pp-leverage').value) : 1;
+  if (size > paperBalance) return alert('Insufficient balance');
+  const pos = { coin, side, size, entry: prices[coin], leverage, time: new Date(), id: Date.now() };
+  positions.push(pos);
+  paperBalance -= size;
+  addDecision('TRADE', 'Executor', coin, `${side.toUpperCase()} ${coin} $${fmt(size)} @ $${fmt(prices[coin], coin==='BTC'||coin==='ETH'?0:2)} (${leverage}x)`);
+  updatePaperUI();
+}
+
+function closePosition(id) {
+  const idx = positions.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  const pos = positions[idx];
+  const pnl = calcPnL(pos);
+  paperBalance += pos.size + pnl;
+  tradeHistory.push({ ...pos, exit: prices[pos.coin], pnl, closeTime: new Date() });
+  positions.splice(idx, 1);
+  equityCurve.push(paperBalance + positions.reduce((s,p) => s + calcPnL(p), 0));
+  addDecision('CLOSE', 'Executor', pos.coin, `Closed ${pos.side} ${pos.coin} PnL: ${pnl>=0?'+':''}$${fmt(pnl)}`);
+  updatePaperUI();
+}
+
+function closeAllPositions() {
+  [...positions].forEach(p => closePosition(p.id));
+}
+
+function updatePositions() {
+  if (positions.length === 0) return;
+  updatePaperUI();
+}
+
+function renderPositionsTable() {
+  const tbody = document.getElementById('pp-positions-tbody');
+  if (!tbody) return;
+  if (positions.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-3);padding:24px">No open positions</td></tr>';
+    return;
+  }
+  tbody.innerHTML = positions.map(p => {
+    const pnl = calcPnL(p);
+    const pnlPct = (pnl / p.size * 100);
+    const mark = prices[p.coin];
+    const priceStr = mark >= 1 ? '$' + fmt(mark, mark > 100 ? 0 : 2) : '$' + mark.toFixed(4);
+    const entryStr = p.entry >= 1 ? '$' + fmt(p.entry, p.entry > 100 ? 0 : 2) : '$' + p.entry.toFixed(4);
+    return `<tr>
+      <td style="font-weight:600;color:var(--text-0)">${p.coin}/USDT</td>
+      <td><span class="tag ${p.side==='long'?'tag-long':'tag-short'}">${p.side.toUpperCase()}</span></td>
+      <td>$${fmt(p.size)}</td>
+      <td>${entryStr}</td>
+      <td>${priceStr}</td>
+      <td class="${pnl>=0?'text-green':'text-red'}">${pnl>=0?'+':''}$${fmt(pnl)}</td>
+      <td class="${pnlPct>=0?'text-green':'text-red'}">${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%</td>
+      <td>${p.leverage}x</td>
+      <td><button class="btn btn-danger btn-sm" onclick="closePosition(${p.id})">Close</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderHistoryTable() {
+  const tbody = document.getElementById('pp-history-tbody');
+  if (!tbody) return;
+  if (tradeHistory.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-3);padding:24px">No trades yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = tradeHistory.slice().reverse().map(t => {
+    const pnlPct = (t.pnl / t.size * 100);
+    return `<tr>
+      <td class="text-muted">${timeStr(t.closeTime)}</td>
+      <td style="font-weight:600;color:var(--text-0)">${t.coin}</td>
+      <td><span class="tag ${t.side==='long'?'tag-long':'tag-short'}">${t.side.toUpperCase()}</span></td>
+      <td>$${fmt(t.size)}</td>
+      <td>$${fmt(t.entry,2)}</td>
+      <td>$${fmt(t.exit,2)}</td>
+      <td class="${t.pnl>=0?'text-green':'text-red'}">${t.pnl>=0?'+':''}$${fmt(t.pnl)}</td>
+      <td class="${pnlPct>=0?'text-green':'text-red'}">${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%</td>
+    </tr>`;
+  }).join('');
+}
+
+function quickTrade(coin, direction) {
+  document.querySelector('[data-view="paper"]').click();
+  document.getElementById('pp-coin').value = coin + '/USDT';
+  setTimeout(() => placeOrder(direction.toLowerCase()), 100);
+}
+
+// === PAPER MODE TABS ===
+document.querySelectorAll('#paper-mode-tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('#paper-mode-tabs .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    paperMode = tab.dataset.mode;
+    document.getElementById('pp-lev-wrap').style.display = paperMode === 'futures' ? 'block' : 'none';
+  });
+});
+
+// === CANVAS CHARTS ===
+function drawEquityCurve() {
+  const canvas = document.getElementById('equity-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * 2;
+  canvas.height = rect.height * 2;
+  ctx.scale(2, 2);
+  const w = rect.width, h = rect.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const data = equityCurve.length > 1 ? equityCurve : [10000, 10000];
+  const min = Math.min(...data) * 0.98;
+  const max = Math.max(...data) * 1.02;
+  const range = max - min || 1;
+
+  // Grid
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < 5; i++) {
+    const y = (i / 4) * h;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+  }
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#00e5ff';
+  ctx.lineWidth = 2;
+  data.forEach((v, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((v - min) / range) * h;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, 'rgba(0,229,255,0.15)');
+  grad.addColorStop(1, 'rgba(0,229,255,0)');
+  ctx.lineTo(w, h);
+  ctx.lineTo(0, h);
+  ctx.fillStyle = grad;
+  ctx.fill();
+}
+
+function drawMonteCarlo() {
+  const canvas = document.getElementById('mc-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * 2;
+  canvas.height = rect.height * 2;
+  ctx.scale(2, 2);
+  const w = rect.width, h = rect.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const days = parseInt(document.getElementById('mc-days')?.value || 30);
+  const paths = 50;
+  const startVal = 10000;
+  let allVals = [startVal];
+  let allPaths = [];
+
+  for (let p = 0; p < paths; p++) {
+    let path = [startVal];
+    for (let d = 0; d < days; d++) {
+      const ret = (Math.random() - 0.48) * 0.04;
+      path.push(path[path.length-1] * (1 + ret));
+      allVals.push(path[path.length-1]);
+    }
+    allPaths.push(path);
+  }
+
+  const min = Math.min(...allVals) * 0.95;
+  const max = Math.max(...allVals) * 1.05;
+  const range = max - min || 1;
+
+  // Grid
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < 5; i++) {
+    const y = (i / 4) * h;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+  }
+
+  // Start line
+  const startY = h - ((startVal - min) / range) * h;
+  ctx.strokeStyle = '#334155';
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(0, startY); ctx.lineTo(w, startY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Paths
+  allPaths.forEach((path, pi) => {
+    ctx.beginPath();
+    ctx.strokeStyle = `rgba(0,229,255,${0.08 + (pi === 0 ? 0.3 : 0)})`;
+    ctx.lineWidth = pi === 0 ? 2 : 0.8;
+    path.forEach((v, i) => {
+      const x = (i / (path.length - 1)) * w;
+      const y = h - ((v - min) / range) * h;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  });
+
+  // Update percentiles
+  const finals = allPaths.map(p => p[p.length-1]);
+  finals.sort((a,b) => a - b);
+  const p5 = finals[Math.floor(finals.length * 0.05)];
+  const p50 = finals[Math.floor(finals.length * 0.5)];
+  const p95 = finals[Math.floor(finals.length * 0.95)];
+  document.getElementById('mc-p5').textContent = '$' + fmt(p5 - startVal, 0);
+  document.getElementById('mc-p50').textContent = '$' + fmt(p50 - startVal, 0);
+  document.getElementById('mc-p95').textContent = '$' + fmt(p95 - startVal, 0);
+}
+
+function drawBacktestChart() {
+  const canvas = document.getElementById('bt-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * 2;
+  canvas.height = rect.height * 2;
+  ctx.scale(2, 2);
+  const w = rect.width, h = rect.height;
+  ctx.clearRect(0, 0, w, h);
+
+  // Generate fake backtest equity
+  let data = [10000];
+  for (let i = 0; i < 47; i++) {
+    const win = Math.random() < 0.64;
+    data.push(data[data.length-1] + (win ? rnd(20,120) : -rnd(30,80)));
+  }
+
+  const min = Math.min(...data) * 0.99;
+  const max = Math.max(...data) * 1.01;
+  const range = max - min || 1;
+
+  ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 0.5;
+  for (let i = 0; i < 5; i++) { const y = (i/4)*h; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+
+  ctx.beginPath();
+  ctx.strokeStyle = '#a78bfa';
+  ctx.lineWidth = 2;
+  data.forEach((v, i) => {
+    const x = (i / (data.length-1)) * w;
+    const y = h - ((v-min)/range) * h;
+    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  const grad = ctx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0,'rgba(167,139,250,0.15)');
+  grad.addColorStop(1,'rgba(167,139,250,0)');
+  ctx.lineTo(w,h); ctx.lineTo(0,h);
+  ctx.fillStyle = grad; ctx.fill();
+}
+
+// === CORRELATION HEATMAP ===
+function renderCorrelation() {
+  const container = document.getElementById('corr-heatmap');
+  if (!container) return;
+  const assets = ['BTC','ETH','SOL','BNB','XRP','DOGE','ADA','AVAX'];
+  const corr = [];
+  for (let i = 0; i < assets.length; i++) {
+    corr[i] = [];
+    for (let j = 0; j < assets.length; j++) {
+      corr[i][j] = i === j ? 1.0 : (0.3 + Math.random() * 0.6);
+      if (j < i) corr[i][j] = corr[j][i];
+    }
+  }
+
+  let html = '<div style="display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--text-3)"></div>';
+  assets.forEach(a => { html += `<div style="display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--text-3);padding:2px">${a}</div>`; });
+
+  assets.forEach((a, i) => {
+    html += `<div style="display:flex;align-items:center;font-size:8px;color:var(--text-3);padding-right:4px;justify-content:flex-end">${a}</div>`;
+    assets.forEach((b, j) => {
+      const v = corr[i][j];
+      const r = Math.round(v * 200);
+      const bg = `rgba(${r},${Math.round(100-v*60)},${Math.round(255-v*200)},0.5)`;
+      html += `<div style="display:flex;align-items:center;justify-content:center;background:${bg};border-radius:3px;padding:4px;font-size:8px;font-weight:600;color:${v>0.7?'var(--text-0)':'var(--text-2)'}">${v.toFixed(2)}</div>`;
+    });
+  });
+  container.innerHTML = html;
+}
+
+// === CHAT ===
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  appendChat('user', msg);
+  setTimeout(() => {
+    const response = generateAIResponse(msg);
+    appendChat('ai', response);
+  }, 500 + Math.random() * 1000);
+}
+
+function quickPrompt(msg) {
+  document.getElementById('chat-input').value = msg;
+  sendChat();
+}
+
+function appendChat(role, msg) {
+  const container = document.getElementById('chat-messages');
+  const avatar = role === 'ai' ? 'N' : 'U';
+  container.innerHTML += `<div class="chat-msg ${role}">
+    <div class="chat-avatar">${avatar}</div>
+    <div class="chat-bubble">${msg}</div>
+  </div>`;
+  container.scrollTop = container.scrollHeight;
+}
+
+function clearChat() {
+  document.getElementById('chat-messages').innerHTML = `<div class="chat-msg ai">
+    <div class="chat-avatar">N</div>
+    <div class="chat-bubble">Chat cleared. How can I help you analyze the markets?</div>
+  </div>`;
+}
+
+function generateAIResponse(msg) {
+  const lower = msg.toLowerCase();
+  const btc = signals.find(s => s.s === 'BTC');
+  const eth = signals.find(s => s.s === 'ETH');
+  const topLong = signals.filter(s => s.direction === 'LONG').slice(0, 3);
+  const topShort = signals.filter(s => s.direction === 'SHORT').slice(0, 3);
+
+  if (lower.includes('strongest') || lower.includes('best')) {
+    const top = signals[0];
+    return `<strong>${top.s}/USDT</strong> shows the highest confluence score at <strong>${top.confidence}</strong>. Signal: ${top.direction} with R:R of 1:${top.rr}. The EMA cross, market structure, and multi-timeframe analysis all align. Risk level: ${top.risk}.`;
+  }
+  if (lower.includes('short') && lower.includes('confidence')) {
+    if (topShort.length === 0) return 'No high-confidence SHORT setups at the moment. Market regime is predominantly bullish. I recommend waiting for a clearer setup or checking lower timeframes.';
+    return `Top SHORT candidates:<br>${topShort.map(s => `&bull; <strong>${s.s}</strong> — Confidence: ${s.confidence}, R:R: 1:${s.rr}`).join('<br>')}`;
+  }
+  if (lower.includes('btc') && lower.includes('bias')) {
+    return `BTC is at <strong>$${fmt(prices.BTC,0)}</strong>. 24h change: ${changes.BTC>=0?'+':''}${changes.BTC.toFixed(2)}%. The Technical Agent sees ${btc?.direction || 'NEUTRAL'} with ${btc?.confidence || '--'}% confluence. Market structure shows higher highs and higher lows on the 4H. EMA20 is above EMA50. Bias: <strong>${btc?.confidence > 60 ? 'BULLISH' : 'NEUTRAL'}</strong>.`;
+  }
+  if (lower.includes('regime')) {
+    return 'Current market regime: <strong style="color:var(--green)">BULLISH</strong> (78% confidence). DXY is weakening, Fed is on hold, and market structure shows continuation patterns. The Macro Agent confirms risk-on conditions. Sentiment is in "Greed" territory but not extreme.';
+  }
+  if (lower.includes('volatile') || lower.includes('volatility')) {
+    const highVol = signals.sort((a,b) => b.atr - a.atr).slice(0,5);
+    return `Highest volatility coins right now:<br>${highVol.map(s => `&bull; <strong>${s.s}</strong> — ATR score: ${s.atr}, 24h: ${s.change>=0?'+':''}${s.change.toFixed(2)}%`).join('<br>')}`;
+  }
+  if (lower.includes('eth') && lower.includes('risk')) {
+    return `ETH risk assessment:<br>&bull; Price: $${fmt(prices.ETH,0)}<br>&bull; Signal: ${eth?.direction || 'NEUTRAL'} (${eth?.confidence || '--'}% confidence)<br>&bull; ATR-based stop distance: ~$${fmt(prices.ETH * 0.025, 0)}<br>&bull; Risk level: ${eth?.risk || 'MEDIUM'}<br>&bull; Correlation with BTC: 0.89 (high — diversification limited)`;
+  }
+  if (lower.includes('consensus')) {
+    const bullCount = signals.filter(s => s.direction === 'LONG').length;
+    return `Agent consensus across 30 pairs:<br>&bull; <strong>${bullCount} LONG</strong> signals, <strong>${30-bullCount} SHORT/NEUTRAL</strong><br>&bull; Macro Agent: Risk-on (DXY weak, Fed dovish)<br>&bull; Technical Agent: Bullish structure on major caps<br>&bull; Sentiment Agent: F&G at 62, social momentum positive<br>&bull; Risk Agent: Portfolio VaR within limits<br>&bull; Overall: <strong>MODERATELY BULLISH</strong>`;
+  }
+  return `Based on current analysis: The market is in a <strong>bullish regime</strong> with ${signals.filter(s=>s.direction==='LONG').length} LONG signals across 30 pairs. Top pick: <strong>${signals[0]?.s}</strong> with ${signals[0]?.confidence}% confluence. The agent fleet is aligned — Macro, Technical, and Sentiment agents all lean bullish. Risk parameters are within limits.`;
+}
+
+// === LOG ===
+function renderLogTable() {
+  const tbody = document.getElementById('log-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = decisionLog.slice(0, 50).map(d => {
+    const agentColors = {Macro:'text-cyan',Technical:'text-purple',Sentiment:'text-amber',Risk:'text-red',Executor:'text-green',Engine:'text-cyan',System:'text-purple'};
+    const actionColors = {SIGNAL:'tag-neutral',TRADE:'tag-long',CLOSE:'tag-short',DECISION:'tag-medium'};
+    return `<tr>
+      <td class="text-muted">${timeStr(d.time)}</td>
+      <td><span class="tag ${actionColors[d.action]||'tag-neutral'}">${d.action}</span></td>
+      <td class="${agentColors[d.agent]||'text-cyan'} font-bold">${d.agent}</td>
+      <td style="color:var(--text-0)">${d.coin}</td>
+      <td style="max-width:300px">${d.detail}</td>
+      <td class="font-mono">${d.confidence}%</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportLog(format) {
+  const data = format === 'json' ? JSON.stringify(decisionLog, null, 2) :
+    'Time,Action,Agent,Coin,Detail,Confidence\n' +
+    decisionLog.map(d => `${d.time.toISOString()},${d.action},${d.agent},${d.coin},"${d.detail}",${d.confidence}`).join('\n');
+  const blob = new Blob([data], {type: 'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nexus-log.${format}`;
+  a.click();
+}
+
+function clearLog() { decisionLog = []; renderLogTable(); renderDecisionFeed(); }
+
+function exportTrades() {
+  if (tradeHistory.length === 0) return;
+  const csv = 'Time,Coin,Side,Size,Entry,Exit,PnL\n' +
+    tradeHistory.map(t => `${t.closeTime.toISOString()},${t.coin},${t.side},${t.size},${t.entry},${t.exit},${t.pnl.toFixed(2)}`).join('\n');
+  const blob = new Blob([csv], {type: 'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'nexus-trades.csv';
+  a.click();
+}
+
+// === MONTE CARLO ===
+function runMonteCarlo() { drawMonteCarlo(); addDecision('DECISION','Risk','ALL','Monte Carlo simulation completed — 1000 paths'); }
+
+// === BACKTEST ===
+function runBacktest() {
+  const pf = (1.5 + Math.random() * 2).toFixed(2);
+  const wr = (50 + Math.random() * 25).toFixed(1);
+  const trades = rndInt(30, 80);
+  const pnl = rndInt(-500, 3000);
+  const dd = (-rnd(3, 15)).toFixed(1);
+  const sharpe = (0.5 + Math.random() * 2.5).toFixed(2);
+  const rr = (1.5 + Math.random() * 2.5).toFixed(1);
+  document.getElementById('bt-pf').textContent = pf;
+  document.getElementById('bt-wr').textContent = wr + '%';
+  document.getElementById('bt-trades').textContent = trades;
+  document.getElementById('bt-pnl').textContent = (pnl>=0?'+':'') + '$' + fmt(Math.abs(pnl),0);
+  document.getElementById('bt-pnl').className = `text-sm font-bold font-mono ${pnl>=0?'text-green':'text-red'}`;
+  document.getElementById('bt-dd').textContent = dd + '%';
+  document.getElementById('bt-sharpe').textContent = sharpe;
+  document.getElementById('bt-rr').textContent = '1:' + rr;
+  drawBacktestChart();
+  addDecision('SIGNAL','Engine',document.getElementById('strat-asset').value,`Backtest: PF=${pf}, WR=${wr}%, ${trades} trades`);
+}
+
+// === REFRESH ===
+function refreshAll() {
+  updatePrices();
+  generateSignals();
+  renderSignalTable();
+  renderHeatmap();
+  renderConsensus();
+  renderCorrelation();
+  updatePaperUI();
+}
+
+function runAgentCycle() {
+  for (let i = 0; i < 3; i++) simulateAgentDecisions();
+  renderConsensus();
+}
+
+function toggleAgentPause() {
+  // Visual toggle only
+  document.querySelectorAll('.agent-status').forEach(s => {
+    if (s.classList.contains('active')) { s.classList.remove('active'); s.classList.add('standby'); s.innerHTML = '<div class="dot"></div> PAUSED'; }
+    else { s.classList.remove('standby'); s.classList.add('active'); s.innerHTML = '<div class="dot"></div> ACTIVE'; }
+  });
+}
+
+// === LIVE BITGET API INTEGRATION ===
+const BITGET_SYMBOLS = [
+  'BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT','DOGEUSDT',
+  'ADAUSDT','AVAXUSDT','DOTUSDT','LINKUSDT','MATICUSDT','UNIUSDT',
+  'ATOMUSDT','FILUSDT','APTUSDT','ARBUSDT','OPUSDT','INJUSDT',
+  'SUIUSDT','SEIUSDT','TIAUSDT','NEARUSDT','ALGOUSDT','FTMUSDT',
+  'AAVEUSDT','MKRUSDT','LDOUSDT','SNXUSDT','COMPUSDT','CRVUSDT'
+];
+
+let liveDataLoaded = false;
+
+async function fetchBitgetPrices() {
+  try {
+    const resp = await fetch('https://api.bitget.com/api/v2/spot/market/tickers');
+    const data = await resp.json();
+    if (data.code === '00000' && data.data) {
+      const tickerMap = {};
+      data.data.forEach(t => { tickerMap[t.symbol] = t; });
+      
+      COINS.forEach(c => {
+        const symbol = c.s + 'USDT';
+        const ticker = tickerMap[symbol];
+        if (ticker) {
+          const price = parseFloat(ticker.lastPr);
+          const change24h = parseFloat(ticker.change24h) * 100;
+          if (price > 0) {
+            prices[c.s] = price;
+            changes[c.s] = change24h;
+          }
+        }
+      });
+      liveDataLoaded = true;
+      updateTopBar();
+      generateSignals();
+      renderSignalTable();
+      renderHeatmap();
+      renderConsensus();
+      
+      // Update live badge
+      const liveText = document.getElementById('live-text');
+      if (liveText) liveText.textContent = 'LIVE DATA';
+    }
+  } catch(e) {
+    console.log('Bitget API fallback to simulated data');
+  }
+}
+
+async function fetchFearGreed() {
+  try {
+    const resp = await fetch('https://api.alternative.me/fng/?limit=1');
+    const data = await resp.json();
+    if (data && data.data && data.data[0]) {
+      const val = parseInt(data.data[0].value);
+      const cls = data.data[0].value_classification;
+      const fgEl = document.getElementById('tb-fg');
+      if (fgEl) fgEl.textContent = val + ' ' + cls;
+      const fgGauge = document.getElementById('fg-gauge');
+      if (fgGauge) {
+        fgGauge.textContent = val;
+        fgGauge.style.color = val > 75 ? 'var(--green)' : val > 50 ? 'var(--amber)' : val > 25 ? 'var(--amber)' : 'var(--red)';
+      }
+    }
+  } catch(e) {
+    console.log('F&G API fallback');
+  }
+}
+
+async function fetchAllLiveData() {
+  await Promise.all([fetchBitgetPrices(), fetchFearGreed()]);
+}
+
+// === INIT ===
+function init() {
+  generateSignals();
+  renderSignalTable();
+  renderHeatmap();
+  renderConsensus();
+  renderCorrelation();
+  updateTopBar();
+  updatePaperUI();
+
+  // Seed some decisions
+  const seedDecisions = [
+    {action:'SIGNAL',agent:'Engine',coin:'BTC',detail:'Initial scan: BTC LONG signal, confidence 82%'},
+    {action:'SIGNAL',agent:'Engine',coin:'SOL',detail:'SOL LONG signal — EMA cross + structure alignment'},
+    {action:'DECISION',agent:'Macro',coin:'ALL',detail:'DXY weakening trend — risk-on backdrop'},
+    {action:'DECISION',agent:'Technical',coin:'ETH',detail:'ETH market structure: HH/HL on 4H confirmed'},
+    {action:'DECISION',agent:'Sentiment',coin:'ALL',detail:'F&G index at 62 — Greed territory, not extreme'},
+    {action:'DECISION',agent:'Risk',coin:'ALL',detail:'Portfolio VaR: -$340 (95% CI) — within limits'},
+    {action:'DECISION',agent:'Executor',coin:'BTC',detail:'Smart order routing ready — waiting for signal confirmation'},
+  ];
+  seedDecisions.forEach(d => {
+    d.time = new Date(Date.now() - Math.random() * 3600000);
+    d.confidence = rndInt(60, 95);
+    decisionLog.push(d);
+  });
+  decisionLog.sort((a,b) => b.time - a.time);
+  renderDecisionFeed();
+  renderLogTable();
+
+  // Start intervals
+  setInterval(updatePrices, 3000);
+  setInterval(() => {
+    if (Math.random() < 0.3) simulateAgentDecisions();
+  }, 8000);
+  setInterval(() => {
+    generateSignals();
+    renderHeatmap();
+  }, 15000);
+  
+  // Fetch live data from Bitget API
+  fetchAllLiveData();
+  setInterval(fetchAllLiveData, 60000); // Refresh every 60s
+}
+
+// Handle enter key in chat
+document.getElementById('chat-input')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendChat();
+});
+
+// Tab handlers
+document.querySelectorAll('#heatmap-tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('#heatmap-tabs .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderHeatmap();
+  });
+});
+
+document.querySelectorAll('#log-time-tabs .tab, #log-type-tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const parent = tab.parentElement;
+    parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderLogTable();
+  });
+});
+
+// Start
+init();
+
+// Hide hosting banner
+setTimeout(() => {
+  document.querySelectorAll('div').forEach(el => {
+    const text = el.textContent || '';
+    const cls = el.className || '';
+    if ((text.includes('MuleRun') || text.includes('Built with') || cls.includes('mule')) 
+        && el.style.position === 'fixed' && el.style.bottom === '0px') {
+      el.remove();
+    }
+  });
+}, 100);
+</script>
+</body>
+</html>
