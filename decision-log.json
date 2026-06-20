@@ -1,0 +1,1617 @@
+{
+  "metadata": {
+    "generated": "2026-06-19T22:37:02.671Z",
+    "total_entries": 200,
+    "period": "7 days",
+    "agents": [
+      "Macro",
+      "Technical",
+      "Sentiment",
+      "Risk",
+      "Executor",
+      "Engine"
+    ]
+  },
+  "decisions": [
+    {
+      "timestamp": "2026-06-19T22:11:10.511Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "DOGE/USDT",
+      "detail": "DOGE: Golden cross forming on daily — long-term bullish",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-19T21:50:10.337Z",
+      "action": "CLOSE",
+      "agent": "Executor",
+      "coin": "SOL/USDT",
+      "detail": "Position sized: SOL 2% risk = $471 notional",
+      "confidence": 73
+    },
+    {
+      "timestamp": "2026-06-19T21:22:37.719Z",
+      "action": "CLOSE",
+      "agent": "Executor",
+      "coin": "XRP/USDT",
+      "detail": "Take profit hit: XRP closed at $0.54 (+4.0%)",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-19T20:58:59.818Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "XRP/USDT",
+      "detail": "Treasury yields declining, supports BTC as alternative store of value",
+      "confidence": 81
+    },
+    {
+      "timestamp": "2026-06-19T20:30:24.162Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "INJ/USDT",
+      "detail": "Regime classifier: BULLISH (confidence 72%)",
+      "confidence": 51
+    },
+    {
+      "timestamp": "2026-06-19T15:36:03.890Z",
+      "action": "DECISION",
+      "agent": "Sentiment",
+      "coin": "XRP/USDT",
+      "detail": "Social volume spike on XRP +68% in 1h",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-19T14:01:43.241Z",
+      "action": "SIGNAL",
+      "agent": "Risk",
+      "coin": "UNI/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 58
+    },
+    {
+      "timestamp": "2026-06-19T12:47:17.466Z",
+      "action": "CLOSE",
+      "agent": "Executor",
+      "coin": "XRP/USDT",
+      "detail": "Smart order routed: XRP limit buy at $0.52",
+      "confidence": 91
+    },
+    {
+      "timestamp": "2026-06-19T12:15:48.942Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "ATOM/USDT",
+      "detail": "Position sized: ATOM 2% risk = $463 notional",
+      "confidence": 71
+    },
+    {
+      "timestamp": "2026-06-19T11:22:04.838Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "AAVE/USDT",
+      "detail": "Treasury yields declining, supports BTC as alternative store of value",
+      "confidence": 63
+    },
+    {
+      "timestamp": "2026-06-19T09:34:05.957Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "APT/USDT",
+      "detail": "Order execution latency: 12ms — within acceptable range",
+      "confidence": 58
+    },
+    {
+      "timestamp": "2026-06-19T09:31:25.213Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "ARB/USDT",
+      "detail": "ARB: ATR expansion — volatility increasing, widening stops",
+      "confidence": 86
+    },
+    {
+      "timestamp": "2026-06-19T08:33:19.782Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "UNI/USDT",
+      "detail": "UNI: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-19T07:03:17.033Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "ATOM/USDT",
+      "detail": "DXY weakening trend confirmed — risk-on backdrop for crypto",
+      "confidence": 58
+    },
+    {
+      "timestamp": "2026-06-19T06:45:12.791Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "NEAR/USDT",
+      "detail": "Order execution latency: 12ms — within acceptable range",
+      "confidence": 71
+    },
+    {
+      "timestamp": "2026-06-19T05:28:32.474Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "ATOM/USDT",
+      "detail": "Global liquidity expanding — positive signal for crypto markets",
+      "confidence": 56
+    },
+    {
+      "timestamp": "2026-06-19T04:48:48.581Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "SUI/USDT",
+      "detail": "SUI: Ichimoku cloud breakout on 4H — strong momentum",
+      "confidence": 58
+    },
+    {
+      "timestamp": "2026-06-19T03:52:08.742Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "SOL/USDT",
+      "detail": "SOL: Golden cross forming on daily — long-term bullish",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-19T02:59:18.045Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "DOGE/USDT",
+      "detail": "DOGE: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-19T02:41:29.241Z",
+      "action": "CLOSE",
+      "agent": "Sentiment",
+      "coin": "INJ/USDT",
+      "detail": "Social volume spike on INJ +34% in 1h",
+      "confidence": 61
+    },
+    {
+      "timestamp": "2026-06-19T01:46:09.869Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "INJ/USDT",
+      "detail": "DXY weakening trend confirmed — risk-on backdrop for crypto",
+      "confidence": 52
+    },
+    {
+      "timestamp": "2026-06-18T23:24:38.873Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "ETH/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-18T21:15:28.957Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "XRP/USDT",
+      "detail": "Portfolio VaR within limits at -$490 (95% CI)",
+      "confidence": 84
+    },
+    {
+      "timestamp": "2026-06-18T21:11:26.018Z",
+      "action": "SIGNAL",
+      "agent": "Executor",
+      "coin": "ATOM/USDT",
+      "detail": "Stop loss adjusted: ATOM SL moved to $7.91",
+      "confidence": 50
+    },
+    {
+      "timestamp": "2026-06-18T21:03:10.785Z",
+      "action": "SIGNAL",
+      "agent": "Engine",
+      "coin": "AAVE/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 91
+    },
+    {
+      "timestamp": "2026-06-18T20:19:54.449Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "INJ/USDT",
+      "detail": "INJ: EMA20 crossed above EMA50 on 4H — bullish signal",
+      "confidence": 91
+    },
+    {
+      "timestamp": "2026-06-18T19:39:56.742Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "APT/USDT",
+      "detail": "Full scan complete: 22 LONG, 11 SHORT signals",
+      "confidence": 63
+    },
+    {
+      "timestamp": "2026-06-18T19:00:20.180Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "SOL/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 70
+    },
+    {
+      "timestamp": "2026-06-18T18:41:50.387Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "LINK/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 68
+    },
+    {
+      "timestamp": "2026-06-18T18:29:21.462Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "BNB/USDT",
+      "detail": "BNB: EMA20 crossed above EMA50 on 4H — bullish signal",
+      "confidence": 86
+    },
+    {
+      "timestamp": "2026-06-18T16:40:21.546Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "ATOM/USDT",
+      "detail": "Multi-timeframe alignment check passed for top 5 signals",
+      "confidence": 89
+    },
+    {
+      "timestamp": "2026-06-18T15:47:27.777Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "UNI/USDT",
+      "detail": "UNI: RSI divergence detected — potential reversal setup",
+      "confidence": 68
+    },
+    {
+      "timestamp": "2026-06-18T13:50:52.318Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "INJ/USDT",
+      "detail": "Position sized: INJ 2% risk = $403 notional",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-18T13:09:50.027Z",
+      "action": "SIGNAL",
+      "agent": "Executor",
+      "coin": "LINK/USDT",
+      "detail": "Order execution latency: 12ms — within acceptable range",
+      "confidence": 92
+    },
+    {
+      "timestamp": "2026-06-18T12:24:02.680Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "BTC/USDT",
+      "detail": "BTC: ATR expansion — volatility increasing, widening stops",
+      "confidence": 78
+    },
+    {
+      "timestamp": "2026-06-18T11:42:17.983Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "DOGE/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 89
+    },
+    {
+      "timestamp": "2026-06-18T11:10:53.831Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "AVAX/USDT",
+      "detail": "AVAX signal generated — confidence 64%",
+      "confidence": 88
+    },
+    {
+      "timestamp": "2026-06-18T10:35:21.039Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "BTC/USDT",
+      "detail": "Whale accumulation detected: 4.4K BTC moved off exchanges",
+      "confidence": 70
+    },
+    {
+      "timestamp": "2026-06-18T10:15:15.009Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "ETH/USDT",
+      "detail": "ETH: Golden cross forming on daily — long-term bullish",
+      "confidence": 57
+    },
+    {
+      "timestamp": "2026-06-18T08:37:12.824Z",
+      "action": "SIGNAL",
+      "agent": "Executor",
+      "coin": "INJ/USDT",
+      "detail": "Take profit hit: INJ closed at $25.48 (+4.0%)",
+      "confidence": 56
+    },
+    {
+      "timestamp": "2026-06-18T08:26:32.639Z",
+      "action": "SIGNAL",
+      "agent": "Risk",
+      "coin": "NEAR/USDT",
+      "detail": "Portfolio VaR within limits at -$444 (95% CI)",
+      "confidence": 55
+    },
+    {
+      "timestamp": "2026-06-18T07:29:01.162Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "UNI/USDT",
+      "detail": "Treasury yields declining, supports BTC as alternative store of value",
+      "confidence": 88
+    },
+    {
+      "timestamp": "2026-06-18T06:09:37.083Z",
+      "action": "SIGNAL",
+      "agent": "Risk",
+      "coin": "OP/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-18T05:57:03.612Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "AAVE/USDT",
+      "detail": "DXY weakening trend confirmed — risk-on backdrop for crypto",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-18T04:55:05.676Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "ATOM/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 70
+    },
+    {
+      "timestamp": "2026-06-18T04:36:51.657Z",
+      "action": "CLOSE",
+      "agent": "Sentiment",
+      "coin": "ETH/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 71
+    },
+    {
+      "timestamp": "2026-06-18T03:31:58.031Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "SOL/USDT",
+      "detail": "Position sized: SOL 2% risk = $528 notional",
+      "confidence": 83
+    },
+    {
+      "timestamp": "2026-06-18T03:27:50.870Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "ATOM/USDT",
+      "detail": "F&G index rising to 62 — greed building but not extreme",
+      "confidence": 84
+    },
+    {
+      "timestamp": "2026-06-18T03:09:57.325Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "ATOM/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 50
+    },
+    {
+      "timestamp": "2026-06-18T02:08:40.772Z",
+      "action": "TRADE",
+      "agent": "Risk",
+      "coin": "MATIC/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 55
+    },
+    {
+      "timestamp": "2026-06-18T00:35:13.296Z",
+      "action": "TRADE",
+      "agent": "Risk",
+      "coin": "OP/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 94
+    },
+    {
+      "timestamp": "2026-06-18T00:31:09.025Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "ADA/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 66
+    },
+    {
+      "timestamp": "2026-06-18T00:24:19.223Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "LINK/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 69
+    },
+    {
+      "timestamp": "2026-06-18T00:16:38.696Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "SOL/USDT",
+      "detail": "SOL: Ichimoku cloud breakout on 4H — strong momentum",
+      "confidence": 63
+    },
+    {
+      "timestamp": "2026-06-17T23:53:09.051Z",
+      "action": "DECISION",
+      "agent": "Macro",
+      "coin": "ETH/USDT",
+      "detail": "Treasury yields declining, supports BTC as alternative store of value",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-17T22:58:40.635Z",
+      "action": "DECISION",
+      "agent": "Sentiment",
+      "coin": "DOGE/USDT",
+      "detail": "Social volume spike on DOGE +41% in 1h",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-17T21:53:28.720Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "NEAR/USDT",
+      "detail": "ATR expansion on BTC — widening stops by 10%",
+      "confidence": 89
+    },
+    {
+      "timestamp": "2026-06-17T18:53:37.956Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "ADA/USDT",
+      "detail": "Stop loss adjusted: ADA SL moved to $0.44",
+      "confidence": 73
+    },
+    {
+      "timestamp": "2026-06-17T17:38:40.042Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "OP/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 55
+    },
+    {
+      "timestamp": "2026-06-17T16:38:51.484Z",
+      "action": "DECISION",
+      "agent": "Engine",
+      "coin": "ARB/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 88
+    },
+    {
+      "timestamp": "2026-06-17T16:00:59.046Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "XRP/USDT",
+      "detail": "XRP: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 83
+    },
+    {
+      "timestamp": "2026-06-17T14:51:13.844Z",
+      "action": "DECISION",
+      "agent": "Engine",
+      "coin": "SUI/USDT",
+      "detail": "SUI signal generated — confidence 91%",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-17T14:41:26.538Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "AVAX/USDT",
+      "detail": "Full scan complete: 24 LONG, 12 SHORT signals",
+      "confidence": 62
+    },
+    {
+      "timestamp": "2026-06-17T13:44:56.318Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "NEAR/USDT",
+      "detail": "Stop loss adjusted: NEAR SL moved to $5.65",
+      "confidence": 51
+    },
+    {
+      "timestamp": "2026-06-17T12:52:07.383Z",
+      "action": "SIGNAL",
+      "agent": "Risk",
+      "coin": "AVAX/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-17T11:52:15.579Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "BTC/USDT",
+      "detail": "BTC: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 68
+    },
+    {
+      "timestamp": "2026-06-17T10:40:23.718Z",
+      "action": "SIGNAL",
+      "agent": "Engine",
+      "coin": "ARB/USDT",
+      "detail": "Regime classifier: BULLISH (confidence 73%)",
+      "confidence": 90
+    },
+    {
+      "timestamp": "2026-06-17T10:06:53.068Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "UNI/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 67
+    },
+    {
+      "timestamp": "2026-06-17T08:36:29.814Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "BTC/USDT",
+      "detail": "BTC: EMA20 crossed above EMA50 on 4H — bullish signal",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-17T08:04:27.686Z",
+      "action": "DECISION",
+      "agent": "Sentiment",
+      "coin": "AVAX/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 55
+    },
+    {
+      "timestamp": "2026-06-17T06:54:02.998Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "AVAX/USDT",
+      "detail": "ATR expansion on BTC — widening stops by 13%",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-17T06:37:23.751Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "ATOM/USDT",
+      "detail": "Social volume spike on ATOM +25% in 1h",
+      "confidence": 67
+    },
+    {
+      "timestamp": "2026-06-17T04:39:53.943Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "NEAR/USDT",
+      "detail": "F&G index rising to 62 — greed building but not extreme",
+      "confidence": 57
+    },
+    {
+      "timestamp": "2026-06-17T04:05:12.772Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "ATOM/USDT",
+      "detail": "ATR expansion on BTC — widening stops by 14%",
+      "confidence": 61
+    },
+    {
+      "timestamp": "2026-06-17T03:39:37.982Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "ETH/USDT",
+      "detail": "ETH: RSI divergence detected — potential reversal setup",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-17T01:03:36.634Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "BTC/USDT",
+      "detail": "BTC: Golden cross forming on daily — long-term bullish",
+      "confidence": 80
+    },
+    {
+      "timestamp": "2026-06-17T00:42:15.629Z",
+      "action": "CLOSE",
+      "agent": "Sentiment",
+      "coin": "AAVE/USDT",
+      "detail": "F&G index rising to 62 — greed building but not extreme",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-17T00:16:58.032Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "BTC/USDT",
+      "detail": "News sentiment positive — institutional adoption narrative growing",
+      "confidence": 62
+    },
+    {
+      "timestamp": "2026-06-16T23:27:30.836Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "BTC/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 88
+    },
+    {
+      "timestamp": "2026-06-16T21:46:46.965Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "SOL/USDT",
+      "detail": "Take profit hit: SOL closed at $178.88 (+4.0%)",
+      "confidence": 57
+    },
+    {
+      "timestamp": "2026-06-16T19:43:18.509Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "NEAR/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 88
+    },
+    {
+      "timestamp": "2026-06-16T18:17:07.791Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "SOL/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 91
+    },
+    {
+      "timestamp": "2026-06-16T17:44:32.074Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "APT/USDT",
+      "detail": "Treasury yields declining, supports BTC as alternative store of value",
+      "confidence": 78
+    },
+    {
+      "timestamp": "2026-06-16T17:19:48.140Z",
+      "action": "DECISION",
+      "agent": "Sentiment",
+      "coin": "LINK/USDT",
+      "detail": "News sentiment positive — institutional adoption narrative growing",
+      "confidence": 57
+    },
+    {
+      "timestamp": "2026-06-16T17:04:05.881Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "ADA/USDT",
+      "detail": "Smart order routed: ADA limit buy at $0.45",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-16T16:57:34.112Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "APT/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 51
+    },
+    {
+      "timestamp": "2026-06-16T16:32:16.969Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "LINK/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 58
+    },
+    {
+      "timestamp": "2026-06-16T16:12:24.478Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "ATOM/USDT",
+      "detail": "Order execution latency: 12ms — within acceptable range",
+      "confidence": 63
+    },
+    {
+      "timestamp": "2026-06-16T14:36:10.929Z",
+      "action": "DECISION",
+      "agent": "Sentiment",
+      "coin": "AAVE/USDT",
+      "detail": "Social volume spike on AAVE +59% in 1h",
+      "confidence": 56
+    },
+    {
+      "timestamp": "2026-06-16T14:35:29.868Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "UNI/USDT",
+      "detail": "UNI: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 90
+    },
+    {
+      "timestamp": "2026-06-16T14:10:46.862Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "APT/USDT",
+      "detail": "Full scan complete: 14 LONG, 13 SHORT signals",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-16T13:15:26.285Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "XRP/USDT",
+      "detail": "XRP: ATR expansion — volatility increasing, widening stops",
+      "confidence": 71
+    },
+    {
+      "timestamp": "2026-06-16T11:28:03.681Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "ARB/USDT",
+      "detail": "ARB signal generated — confidence 82%",
+      "confidence": 70
+    },
+    {
+      "timestamp": "2026-06-16T11:04:57.682Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "ADA/USDT",
+      "detail": "Stop loss adjusted: ADA SL moved to $0.44",
+      "confidence": 71
+    },
+    {
+      "timestamp": "2026-06-16T10:28:33.561Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "AVAX/USDT",
+      "detail": "Order execution latency: 12ms — within acceptable range",
+      "confidence": 90
+    },
+    {
+      "timestamp": "2026-06-16T10:13:16.326Z",
+      "action": "SIGNAL",
+      "agent": "Engine",
+      "coin": "AVAX/USDT",
+      "detail": "Multi-timeframe alignment check passed for top 5 signals",
+      "confidence": 68
+    },
+    {
+      "timestamp": "2026-06-16T09:48:03.023Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "UNI/USDT",
+      "detail": "Order execution latency: 12ms — within acceptable range",
+      "confidence": 84
+    },
+    {
+      "timestamp": "2026-06-16T08:07:25.695Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "DOGE/USDT",
+      "detail": "Take profit hit: DOGE closed at $0.13 (+4.0%)",
+      "confidence": 64
+    },
+    {
+      "timestamp": "2026-06-16T08:01:08.103Z",
+      "action": "DECISION",
+      "agent": "Macro",
+      "coin": "ATOM/USDT",
+      "detail": "DXY weakening trend confirmed — risk-on backdrop for crypto",
+      "confidence": 68
+    },
+    {
+      "timestamp": "2026-06-16T07:45:39.663Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "INJ/USDT",
+      "detail": "Global liquidity expanding — positive signal for crypto markets",
+      "confidence": 67
+    },
+    {
+      "timestamp": "2026-06-16T07:01:17.857Z",
+      "action": "SIGNAL",
+      "agent": "Executor",
+      "coin": "ADA/USDT",
+      "detail": "Stop loss adjusted: ADA SL moved to $0.44",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-16T06:58:41.104Z",
+      "action": "DECISION",
+      "agent": "Executor",
+      "coin": "DOGE/USDT",
+      "detail": "Stop loss adjusted: DOGE SL moved to $0.12",
+      "confidence": 67
+    },
+    {
+      "timestamp": "2026-06-16T06:52:02.590Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "INJ/USDT",
+      "detail": "Max drawdown limit approaching — tightening position sizes",
+      "confidence": 66
+    },
+    {
+      "timestamp": "2026-06-16T06:10:48.956Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "AVAX/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-16T05:52:33.146Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "UNI/USDT",
+      "detail": "News sentiment positive — institutional adoption narrative growing",
+      "confidence": 91
+    },
+    {
+      "timestamp": "2026-06-16T05:18:43.142Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "ETH/USDT",
+      "detail": "ETH: ATR expansion — volatility increasing, widening stops",
+      "confidence": 57
+    },
+    {
+      "timestamp": "2026-06-16T05:05:52.811Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "BTC/USDT",
+      "detail": "Treasury yields declining, supports BTC as alternative store of value",
+      "confidence": 56
+    },
+    {
+      "timestamp": "2026-06-16T04:20:32.960Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "DOT/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 84
+    },
+    {
+      "timestamp": "2026-06-16T03:32:35.343Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "AAVE/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 67
+    },
+    {
+      "timestamp": "2026-06-16T02:52:33.048Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "AVAX/USDT",
+      "detail": "AVAX: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 63
+    },
+    {
+      "timestamp": "2026-06-16T02:15:08.525Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "SOL/USDT",
+      "detail": "Max drawdown limit approaching — tightening position sizes",
+      "confidence": 77
+    },
+    {
+      "timestamp": "2026-06-16T02:13:36.108Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "AVAX/USDT",
+      "detail": "Multi-timeframe alignment check passed for top 5 signals",
+      "confidence": 82
+    },
+    {
+      "timestamp": "2026-06-16T02:10:12.283Z",
+      "action": "TRADE",
+      "agent": "Risk",
+      "coin": "ATOM/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 93
+    },
+    {
+      "timestamp": "2026-06-16T01:46:48.043Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "ATOM/USDT",
+      "detail": "Stop loss adjusted: ATOM SL moved to $7.91",
+      "confidence": 83
+    },
+    {
+      "timestamp": "2026-06-16T00:04:40.963Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "XRP/USDT",
+      "detail": "XRP: Ichimoku cloud breakout on 4H — strong momentum",
+      "confidence": 70
+    },
+    {
+      "timestamp": "2026-06-15T23:56:37.761Z",
+      "action": "CLOSE",
+      "agent": "Sentiment",
+      "coin": "LINK/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-15T23:36:48.354Z",
+      "action": "SIGNAL",
+      "agent": "Executor",
+      "coin": "SUI/USDT",
+      "detail": "Take profit hit: SUI closed at $1.68 (+4.0%)",
+      "confidence": 56
+    },
+    {
+      "timestamp": "2026-06-15T23:19:43.551Z",
+      "action": "CLOSE",
+      "agent": "Technical",
+      "coin": "NEAR/USDT",
+      "detail": "NEAR: EMA20 crossed above EMA50 on 4H — bullish signal",
+      "confidence": 74
+    },
+    {
+      "timestamp": "2026-06-15T20:34:51.072Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "OP/USDT",
+      "detail": "Position sized: OP 2% risk = $584 notional",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-15T19:36:19.112Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "ATOM/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-15T18:49:54.372Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "BTC/USDT",
+      "detail": "BTC: ATR expansion — volatility increasing, widening stops",
+      "confidence": 65
+    },
+    {
+      "timestamp": "2026-06-15T18:26:57.311Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "DOT/USDT",
+      "detail": "DOT: RSI divergence detected — potential reversal setup",
+      "confidence": 64
+    },
+    {
+      "timestamp": "2026-06-15T18:00:34.676Z",
+      "action": "SIGNAL",
+      "agent": "Risk",
+      "coin": "UNI/USDT",
+      "detail": "Max drawdown limit approaching — tightening position sizes",
+      "confidence": 63
+    },
+    {
+      "timestamp": "2026-06-15T17:56:32.271Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "ADA/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 73
+    },
+    {
+      "timestamp": "2026-06-15T16:52:37.660Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "INJ/USDT",
+      "detail": "Global liquidity expanding — positive signal for crypto markets",
+      "confidence": 64
+    },
+    {
+      "timestamp": "2026-06-15T16:26:25.759Z",
+      "action": "TRADE",
+      "agent": "Risk",
+      "coin": "DOGE/USDT",
+      "detail": "ATR expansion on BTC — widening stops by 28%",
+      "confidence": 66
+    },
+    {
+      "timestamp": "2026-06-15T15:30:21.387Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "XRP/USDT",
+      "detail": "Portfolio VaR within limits at -$333 (95% CI)",
+      "confidence": 66
+    },
+    {
+      "timestamp": "2026-06-15T12:45:23.346Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "SUI/USDT",
+      "detail": "Social volume spike on SUI +53% in 1h",
+      "confidence": 59
+    },
+    {
+      "timestamp": "2026-06-15T11:49:38.608Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "AVAX/USDT",
+      "detail": "Multi-timeframe alignment check passed for top 5 signals",
+      "confidence": 91
+    },
+    {
+      "timestamp": "2026-06-15T10:56:29.239Z",
+      "action": "DECISION",
+      "agent": "Sentiment",
+      "coin": "ADA/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 77
+    },
+    {
+      "timestamp": "2026-06-15T10:46:51.720Z",
+      "action": "TRADE",
+      "agent": "Risk",
+      "coin": "DOGE/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 94
+    },
+    {
+      "timestamp": "2026-06-15T08:40:26.260Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "ETH/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 55
+    },
+    {
+      "timestamp": "2026-06-15T08:28:46.456Z",
+      "action": "SIGNAL",
+      "agent": "Risk",
+      "coin": "ADA/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 94
+    },
+    {
+      "timestamp": "2026-06-15T07:09:48.140Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "OP/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 65
+    },
+    {
+      "timestamp": "2026-06-15T06:12:12.324Z",
+      "action": "DECISION",
+      "agent": "Macro",
+      "coin": "ARB/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 51
+    },
+    {
+      "timestamp": "2026-06-15T03:42:52.726Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "AVAX/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 69
+    },
+    {
+      "timestamp": "2026-06-15T03:31:39.902Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "SOL/USDT",
+      "detail": "SOL: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-15T02:34:55.831Z",
+      "action": "CLOSE",
+      "agent": "Technical",
+      "coin": "AVAX/USDT",
+      "detail": "AVAX: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 86
+    },
+    {
+      "timestamp": "2026-06-15T02:31:10.810Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "AAVE/USDT",
+      "detail": "AAVE signal generated — confidence 80%",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-15T01:41:51.327Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "AVAX/USDT",
+      "detail": "Social volume spike on AVAX +54% in 1h",
+      "confidence": 86
+    },
+    {
+      "timestamp": "2026-06-15T01:34:10.552Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "AAVE/USDT",
+      "detail": "ATR expansion on BTC — widening stops by 15%",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-14T23:31:07.732Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "DOT/USDT",
+      "detail": "DOT signal generated — confidence 90%",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-14T23:04:23.510Z",
+      "action": "CLOSE",
+      "agent": "Executor",
+      "coin": "BTC/USDT",
+      "detail": "Take profit hit: BTC closed at $70116.80 (+4.0%)",
+      "confidence": 80
+    },
+    {
+      "timestamp": "2026-06-14T22:38:13.410Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "DOGE/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 59
+    },
+    {
+      "timestamp": "2026-06-14T21:48:07.219Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "ETH/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-14T21:43:50.717Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "OP/USDT",
+      "detail": "OP: ATR expansion — volatility increasing, widening stops",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-14T21:05:54.943Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "INJ/USDT",
+      "detail": "News sentiment positive — institutional adoption narrative growing",
+      "confidence": 77
+    },
+    {
+      "timestamp": "2026-06-14T21:02:42.973Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "SUI/USDT",
+      "detail": "SUI: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-14T20:47:18.236Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "INJ/USDT",
+      "detail": "Regime classifier: BULLISH (confidence 88%)",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-14T20:27:52.998Z",
+      "action": "SIGNAL",
+      "agent": "Engine",
+      "coin": "UNI/USDT",
+      "detail": "Regime classifier: BULLISH (confidence 82%)",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-14T19:10:50.562Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "UNI/USDT",
+      "detail": "UNI: Ichimoku cloud breakout on 4H — strong momentum",
+      "confidence": 67
+    },
+    {
+      "timestamp": "2026-06-14T18:55:54.920Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "DOGE/USDT",
+      "detail": "DXY weakening trend confirmed — risk-on backdrop for crypto",
+      "confidence": 74
+    },
+    {
+      "timestamp": "2026-06-14T17:33:00.729Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "AAVE/USDT",
+      "detail": "AAVE: EMA20 crossed above EMA50 on 4H — bullish signal",
+      "confidence": 80
+    },
+    {
+      "timestamp": "2026-06-14T16:09:19.120Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "INJ/USDT",
+      "detail": "F&G index rising to 62 — greed building but not extreme",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-14T16:00:37.860Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "BNB/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 68
+    },
+    {
+      "timestamp": "2026-06-14T14:12:22.061Z",
+      "action": "CLOSE",
+      "agent": "Technical",
+      "coin": "APT/USDT",
+      "detail": "APT: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 71
+    },
+    {
+      "timestamp": "2026-06-14T12:21:10.473Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "DOGE/USDT",
+      "detail": "Social volume spike on DOGE +35% in 1h",
+      "confidence": 64
+    },
+    {
+      "timestamp": "2026-06-14T11:03:10.116Z",
+      "action": "SIGNAL",
+      "agent": "Sentiment",
+      "coin": "ADA/USDT",
+      "detail": "Social volume spike on ADA +32% in 1h",
+      "confidence": 73
+    },
+    {
+      "timestamp": "2026-06-14T10:31:03.933Z",
+      "action": "SIGNAL",
+      "agent": "Executor",
+      "coin": "MATIC/USDT",
+      "detail": "Order execution latency: 12ms — within acceptable range",
+      "confidence": 87
+    },
+    {
+      "timestamp": "2026-06-14T09:52:22.775Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "MATIC/USDT",
+      "detail": "News sentiment positive — institutional adoption narrative growing",
+      "confidence": 90
+    },
+    {
+      "timestamp": "2026-06-14T08:55:18.077Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "BTC/USDT",
+      "detail": "News sentiment positive — institutional adoption narrative growing",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-14T08:32:05.120Z",
+      "action": "TRADE",
+      "agent": "Risk",
+      "coin": "ETH/USDT",
+      "detail": "Portfolio VaR within limits at -$253 (95% CI)",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-14T08:12:36.569Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "SOL/USDT",
+      "detail": "Correlation spike detected across majors — reducing exposure",
+      "confidence": 93
+    },
+    {
+      "timestamp": "2026-06-14T07:58:07.516Z",
+      "action": "CLOSE",
+      "agent": "Sentiment",
+      "coin": "UNI/USDT",
+      "detail": "Social volume spike on UNI +37% in 1h",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-14T05:39:47.455Z",
+      "action": "TRADE",
+      "agent": "Risk",
+      "coin": "AVAX/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-14T05:11:46.356Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "SUI/USDT",
+      "detail": "Max drawdown limit approaching — tightening position sizes",
+      "confidence": 93
+    },
+    {
+      "timestamp": "2026-06-14T04:36:30.056Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "OP/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 81
+    },
+    {
+      "timestamp": "2026-06-14T04:30:23.042Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "OP/USDT",
+      "detail": "OP: ATR expansion — volatility increasing, widening stops",
+      "confidence": 52
+    },
+    {
+      "timestamp": "2026-06-14T03:58:01.020Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "AAVE/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-14T03:55:43.053Z",
+      "action": "SIGNAL",
+      "agent": "Macro",
+      "coin": "ETH/USDT",
+      "detail": "DXY weakening trend confirmed — risk-on backdrop for crypto",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-14T03:47:37.684Z",
+      "action": "CLOSE",
+      "agent": "Technical",
+      "coin": "SOL/USDT",
+      "detail": "SOL: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 64
+    },
+    {
+      "timestamp": "2026-06-14T02:24:40.150Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "DOT/USDT",
+      "detail": "ATR expansion on BTC — widening stops by 27%",
+      "confidence": 64
+    },
+    {
+      "timestamp": "2026-06-14T00:41:00.389Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "BNB/USDT",
+      "detail": "Social volume spike on BNB +47% in 1h",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-13T19:02:18.674Z",
+      "action": "DECISION",
+      "agent": "Engine",
+      "coin": "SOL/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 55
+    },
+    {
+      "timestamp": "2026-06-13T19:01:35.725Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "BNB/USDT",
+      "detail": "Signal refresh cycle completed — 30 pairs analyzed",
+      "confidence": 80
+    },
+    {
+      "timestamp": "2026-06-13T18:38:09.768Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "ATOM/USDT",
+      "detail": "Multi-timeframe alignment check passed for top 5 signals",
+      "confidence": 86
+    },
+    {
+      "timestamp": "2026-06-13T18:30:32.895Z",
+      "action": "CLOSE",
+      "agent": "Engine",
+      "coin": "ARB/USDT",
+      "detail": "Full scan complete: 17 LONG, 5 SHORT signals",
+      "confidence": 91
+    },
+    {
+      "timestamp": "2026-06-13T18:09:01.863Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "DOT/USDT",
+      "detail": "Portfolio VaR within limits at -$235 (95% CI)",
+      "confidence": 90
+    },
+    {
+      "timestamp": "2026-06-13T15:55:11.126Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "MATIC/USDT",
+      "detail": "F&G index rising to 62 — greed building but not extreme",
+      "confidence": 93
+    },
+    {
+      "timestamp": "2026-06-13T12:23:32.579Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "ADA/USDT",
+      "detail": "Smart order routed: ADA limit buy at $0.45",
+      "confidence": 90
+    },
+    {
+      "timestamp": "2026-06-13T12:06:28.962Z",
+      "action": "CLOSE",
+      "agent": "Sentiment",
+      "coin": "DOGE/USDT",
+      "detail": "News sentiment positive — institutional adoption narrative growing",
+      "confidence": 86
+    },
+    {
+      "timestamp": "2026-06-13T10:00:52.647Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "ATOM/USDT",
+      "detail": "Funding rates turning positive — longs paying, sentiment bullish",
+      "confidence": 52
+    },
+    {
+      "timestamp": "2026-06-13T09:27:50.764Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "AAVE/USDT",
+      "detail": "AAVE: RSI divergence detected — potential reversal setup",
+      "confidence": 75
+    },
+    {
+      "timestamp": "2026-06-13T08:16:31.011Z",
+      "action": "TRADE",
+      "agent": "Macro",
+      "coin": "XRP/USDT",
+      "detail": "DXY weakening trend confirmed — risk-on backdrop for crypto",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-13T08:00:17.554Z",
+      "action": "DECISION",
+      "agent": "Macro",
+      "coin": "ARB/USDT",
+      "detail": "Fed funds rate hold priced in — neutral to bullish for risk assets",
+      "confidence": 51
+    },
+    {
+      "timestamp": "2026-06-13T07:30:08.006Z",
+      "action": "TRADE",
+      "agent": "Sentiment",
+      "coin": "SUI/USDT",
+      "detail": "Social volume spike on SUI +69% in 1h",
+      "confidence": 54
+    },
+    {
+      "timestamp": "2026-06-13T06:21:12.818Z",
+      "action": "CLOSE",
+      "agent": "Executor",
+      "coin": "MATIC/USDT",
+      "detail": "Position sized: MATIC 2% risk = $310 notional",
+      "confidence": 92
+    },
+    {
+      "timestamp": "2026-06-13T04:45:24.739Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "BNB/USDT",
+      "detail": "DXY bounce detected — temporary risk-off pressure",
+      "confidence": 54
+    },
+    {
+      "timestamp": "2026-06-13T04:11:16.803Z",
+      "action": "TRADE",
+      "agent": "Engine",
+      "coin": "ARB/USDT",
+      "detail": "ARB signal generated — confidence 55%",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-13T04:07:09.997Z",
+      "action": "DECISION",
+      "agent": "Technical",
+      "coin": "BTC/USDT",
+      "detail": "BTC: Golden cross forming on daily — long-term bullish",
+      "confidence": 60
+    },
+    {
+      "timestamp": "2026-06-13T03:49:37.028Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "XRP/USDT",
+      "detail": "Position sized: XRP 2% risk = $694 notional",
+      "confidence": 85
+    },
+    {
+      "timestamp": "2026-06-13T03:46:59.429Z",
+      "action": "TRADE",
+      "agent": "Technical",
+      "coin": "SOL/USDT",
+      "detail": "SOL: EMA20 crossed above EMA50 on 4H — bullish signal",
+      "confidence": 57
+    },
+    {
+      "timestamp": "2026-06-13T02:37:20.767Z",
+      "action": "TRADE",
+      "agent": "Executor",
+      "coin": "LINK/USDT",
+      "detail": "Smart order routed: LINK limit buy at $14.17",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-13T02:25:53.832Z",
+      "action": "CLOSE",
+      "agent": "Technical",
+      "coin": "UNI/USDT",
+      "detail": "UNI: Golden cross forming on daily — long-term bullish",
+      "confidence": 71
+    },
+    {
+      "timestamp": "2026-06-13T01:19:40.823Z",
+      "action": "DECISION",
+      "agent": "Risk",
+      "coin": "ATOM/USDT",
+      "detail": "Risk budget replenished after profitable trades — can increase exposure",
+      "confidence": 79
+    },
+    {
+      "timestamp": "2026-06-13T01:15:25.027Z",
+      "action": "SIGNAL",
+      "agent": "Executor",
+      "coin": "DOT/USDT",
+      "detail": "Smart order routed: DOT limit buy at $6.81",
+      "confidence": 65
+    },
+    {
+      "timestamp": "2026-06-13T01:01:51.605Z",
+      "action": "CLOSE",
+      "agent": "Risk",
+      "coin": "LINK/USDT",
+      "detail": "Max drawdown limit approaching — tightening position sizes",
+      "confidence": 53
+    },
+    {
+      "timestamp": "2026-06-13T00:33:49.735Z",
+      "action": "SIGNAL",
+      "agent": "Technical",
+      "coin": "AAVE/USDT",
+      "detail": "AAVE: Market structure HH/HL confirmed on 1H timeframe",
+      "confidence": 72
+    },
+    {
+      "timestamp": "2026-06-12T23:54:04.157Z",
+      "action": "CLOSE",
+      "agent": "Macro",
+      "coin": "AVAX/USDT",
+      "detail": "Global liquidity expanding — positive signal for crypto markets",
+      "confidence": 82
+    },
+    {
+      "timestamp": "2026-06-12T23:26:38.693Z",
+      "action": "DECISION",
+      "agent": "Macro",
+      "coin": "ATOM/USDT",
+      "detail": "Treasury yields declining, supports BTC as alternative store of value",
+      "confidence": 90
+    }
+  ]
+}
